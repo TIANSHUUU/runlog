@@ -250,13 +250,14 @@ body {
   box-shadow: 0 4px 24px rgba(0,0,0,0.13);
   padding: 6px;
   min-width: 210px;
-  pointer-events: auto;
+  pointer-events: none;
 }
 .country-route-item {
   display: flex; align-items: center; gap: 10px;
   padding: 7px 8px;
   border-radius: 8px;
   cursor: pointer;
+  pointer-events: auto;
   transition: background 0.12s;
 }
 .country-route-item:hover { background: #F5F5F7; }

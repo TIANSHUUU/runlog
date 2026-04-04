@@ -176,7 +176,7 @@ const ROUTES = [
     country_iso: 36,
     lat: -37.845178,
     lng: 145.114642,
-    distance: "9.6 km",
+    distance: "5.0 km",
     difficulty: "Easy",
     surface: "Dirt trail",
     elevation: "< 15 m",

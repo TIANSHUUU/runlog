@@ -78,7 +78,9 @@ document.addEventListener('DOMContentLoaded', () => {
         <img class="country-route-thumb" src="${route.thumbnail}" alt="">
         <span class="country-route-name">${route.name}</span>
       `;
-      item.addEventListener('click', () => { location.href = `route.html?id=${route.id}`; });
+      item.addEventListener('click',      () => { location.href = `route.html?id=${route.id}`; });
+      item.addEventListener('mouseenter', () => clearTimeout(countryHideTimer));
+      item.addEventListener('mouseleave', () => hideCountryCard());
       countryCardList.appendChild(item);
     });
     positionCountryCard(pt);
@@ -88,9 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
   function hideCountryCard(delay = 160) {
     countryHideTimer = setTimeout(() => countryCard.classList.add('hidden'), delay);
   }
-
-  countryCard.addEventListener('mouseenter', () => clearTimeout(countryHideTimer));
-  countryCard.addEventListener('mouseleave', () => hideCountryCard());
 
   // ── Country highlights + hover ────────────────────────
   if (highlightISOs.size > 0) {
