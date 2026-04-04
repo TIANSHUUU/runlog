@@ -8,16 +8,36 @@ document.addEventListener('DOMContentLoaded', () => {
     maxBoundsViscosity: 1.0
   }).setView([28, 15], 2);
 
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Tiles &copy; <a href="https://www.esri.com/">Esri</a>',
-    maxZoom: 16,
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 20,
     noWrap: true
   }).addTo(map);
 
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}', {
-    maxZoom: 16,
-    noWrap: true
-  }).addTo(map);
+  // ── Continent labels (English, custom) ────────────────
+  const continents = [
+    { name: 'NORTH AMERICA', lat: 50,  lng: -100 },
+    { name: 'SOUTH AMERICA', lat: -15, lng:  -58  },
+    { name: 'EUROPE',        lat: 52,  lng:   18  },
+    { name: 'AFRICA',        lat:  3,  lng:   22  },
+    { name: 'ASIA',          lat: 44,  lng:   90  },
+    { name: 'OCEANIA',       lat: -27, lng:  134  },
+    { name: 'ANTARCTICA',    lat: -80, lng:    0  }
+  ];
+
+  continents.forEach(({ name, lat, lng }) => {
+    L.marker([lat, lng], {
+      icon: L.divIcon({
+        className: '',
+        html: `<span class="continent-label">${name}</span>`,
+        iconSize:   [0, 0],
+        iconAnchor: [0, 0]
+      }),
+      interactive:    false,
+      zIndexOffset: -1000
+    }).addTo(map);
+  });
 
   L.control.zoom({ position: 'bottomright' }).addTo(map);
 

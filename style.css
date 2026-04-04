@@ -273,6 +273,20 @@ body {
 .leaflet-attribution-flag { display: none !important; }
 .leaflet-control-attribution { font-size: 10px; }
 
+/* ─── Continent labels ────────────────────────────────── */
+.continent-label {
+  display: inline-block;
+  transform: translateX(-50%);
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 1.6px;
+  color: #A0A0A8;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  text-shadow: 0 1px 3px rgba(255,255,255,0.95);
+  font-family: var(--font);
+}
+
 /* ─── Mobile ──────────────────────────────────────────── */
 @media (max-width: 600px) {
   .header, .route-header { padding: 0 16px; }
