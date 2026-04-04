@@ -117,9 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
               layer.setStyle({ fillOpacity: 0.22 });
               showCountryCard(routes, e.containerPoint);
             });
-            layer.on('mousemove', e => {
-              if (!countryCard.classList.contains('hidden')) positionCountryCard(e.containerPoint);
-            });
             layer.on('mouseout', () => {
               layer.setStyle({ fillOpacity: 0.14 });
               hideCountryCard();
