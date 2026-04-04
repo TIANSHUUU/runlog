@@ -41,20 +41,89 @@ document.addEventListener('DOMContentLoaded', () => {
 
   L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-  // ── Country highlights ────────────────────────────────
-  const highlightISOs = new Set(ROUTES.map(r => r.country_iso).filter(Boolean));
+  // ── Group routes by country ISO ───────────────────────
+  const routesByISO = {};
+  ROUTES.forEach(r => {
+    if (!r.country_iso) return;
+    if (!routesByISO[r.country_iso]) routesByISO[r.country_iso] = [];
+    routesByISO[r.country_iso].push(r);
+  });
+  const highlightISOs = new Set(Object.keys(routesByISO).map(Number));
+
+  // ── Country card (multi-route hover list) ─────────────
+  const countryCard     = document.getElementById('country-card');
+  const countryCardList = document.getElementById('country-card-list');
+  let countryHideTimer;
+
+  function positionCountryCard(pt) {
+    const W  = countryCard.offsetWidth  || 220;
+    const H  = countryCard.offsetHeight || 120;
+    const vw = window.innerWidth, vh = window.innerHeight;
+    let x = pt.x + 18;
+    let y = pt.y - H / 2;
+    if (x + W > vw - 16) x = pt.x - W - 18;
+    if (y < 66)          y = 66;
+    if (y + H > vh - 16) y = vh - H - 16;
+    countryCard.style.left = x + 'px';
+    countryCard.style.top  = y + 'px';
+  }
+
+  function showCountryCard(routes, pt) {
+    clearTimeout(countryHideTimer);
+    countryCardList.innerHTML = '';
+    routes.forEach(route => {
+      const item = document.createElement('div');
+      item.className = 'country-route-item';
+      item.innerHTML = `
+        <img class="country-route-thumb" src="${route.thumbnail}" alt="">
+        <span class="country-route-name">${route.name}</span>
+      `;
+      item.addEventListener('click', () => { location.href = `route.html?id=${route.id}`; });
+      countryCardList.appendChild(item);
+    });
+    positionCountryCard(pt);
+    countryCard.classList.remove('hidden');
+  }
+
+  function hideCountryCard(delay = 160) {
+    countryHideTimer = setTimeout(() => countryCard.classList.add('hidden'), delay);
+  }
+
+  countryCard.addEventListener('mouseenter', () => clearTimeout(countryHideTimer));
+  countryCard.addEventListener('mouseleave', () => hideCountryCard());
+
+  // ── Country highlights + hover ────────────────────────
   if (highlightISOs.size > 0) {
     fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
       .then(r => r.json())
       .then(world => {
         const geojson = topojson.feature(world, world.objects.countries);
         L.geoJSON(geojson, {
-          interactive: false,
           style: feature => {
             if (highlightISOs.has(parseInt(feature.id))) {
               return { fillColor: '#3B70D6', fillOpacity: 0.14, color: '#3B70D6', weight: 1.2, opacity: 0.45 };
             }
             return { fill: false, stroke: false };
+          },
+          onEachFeature: (feature, layer) => {
+            const iso    = parseInt(feature.id);
+            const routes = routesByISO[iso];
+            if (!routes || routes.length < 2) {
+              layer.options.interactive = false;
+              return;
+            }
+            layer.on('mouseover', e => {
+              if (markerHovered) return;
+              layer.setStyle({ fillOpacity: 0.22 });
+              showCountryCard(routes, e.containerPoint);
+            });
+            layer.on('mousemove', e => {
+              if (!countryCard.classList.contains('hidden')) positionCountryCard(e.containerPoint);
+            });
+            layer.on('mouseout', () => {
+              layer.setStyle({ fillOpacity: 0.14 });
+              hideCountryCard();
+            });
           }
         }).addTo(map);
       });
@@ -63,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── Route count ───────────────────────────────────────
   document.getElementById('route-count').textContent = `${ROUTES.length} 条线路`;
 
-  // ── Hover card logic ──────────────────────────────────
+  // ── Single-route hover card ───────────────────────────
   const card  = document.getElementById('hover-card');
   const thumb = document.getElementById('card-thumb');
   const name  = document.getElementById('card-name');
@@ -74,26 +143,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function showCard(route) {
     clearTimeout(hideTimer);
+    thumb.src        = route.thumbnail;
+    name.textContent = route.name;
+    loc.textContent  = route.location;
+    dist.textContent = route.distance;
+    diff.textContent = route.difficulty;
+    card.dataset.id  = route.id;
 
-    // Populate
-    thumb.src          = route.thumbnail;
-    name.textContent   = route.name;
-    loc.textContent    = route.location;
-    dist.textContent   = route.distance;
-    diff.textContent   = route.difficulty;
-    card.dataset.id    = route.id;
-
-    // Position (viewport-relative)
     const pt = map.latLngToContainerPoint([route.lat, route.lng]);
     const W = 238, H = 192;
     const vw = window.innerWidth, vh = window.innerHeight;
-
     let x = pt.x + 18;
     let y = pt.y - H / 2;
     if (x + W > vw - 16) x = pt.x - W - 18;
     if (y < 66)          y = 66;
     if (y + H > vh - 16) y = vh - H - 16;
-
     card.style.left = x + 'px';
     card.style.top  = y + 'px';
     card.classList.remove('hidden');
@@ -104,6 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ── Markers ───────────────────────────────────────────
+  let markerHovered = false;
+
   ROUTES.forEach(route => {
     const icon = L.divIcon({
       className: '',
@@ -113,12 +179,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const marker = L.marker([route.lat, route.lng], { icon }).addTo(map);
-    marker.on('mouseover', () => showCard(route));
-    marker.on('mouseout',  () => hideCard());
+    marker.on('mouseover', () => { markerHovered = true;  showCard(route); });
+    marker.on('mouseout',  () => { markerHovered = false; hideCard(); });
     marker.on('click',     () => { location.href = `route.html?id=${route.id}`; });
   });
 
-  // Keep card alive when hovering over it
   card.addEventListener('mouseenter', () => clearTimeout(hideTimer));
   card.addEventListener('mouseleave', () => hideCard());
   card.addEventListener('click',      () => { location.href = `route.html?id=${card.dataset.id}`; });
