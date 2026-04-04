@@ -84,15 +84,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
   L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-  const polyline = L.polyline(route.coordinates, {
-    color:    '#E85D3F',
-    weight:   4.5,
-    opacity:  0.88,
-    lineJoin: 'round',
-    lineCap:  'round'
-  }).addTo(map);
+  const coords = route.coordinates;
+  const hasSpeed = coords.length && coords[0].length === 3;
+  let bounds;
 
-  map.fitBounds(polyline.getBounds(), { padding: [48, 48] });
+  if (hasSpeed) {
+    document.getElementById('speed-legend').classList.remove('hidden');
+    // Draw speed-colored segments: red (slow) → yellow → green (fast)
+    const renderer = L.canvas();
+    for (let i = 0; i < coords.length - 1; i++) {
+      const spd = (coords[i][2] + coords[i+1][2]) / 2;
+      const hue = Math.round(spd * 120); // 0=red, 60=yellow, 120=green
+      L.polyline(
+        [[coords[i][0], coords[i][1]], [coords[i+1][0], coords[i+1][1]]],
+        { color: `hsl(${hue},88%,42%)`, weight: 4, opacity: 0.92,
+          smoothFactor: 0, renderer }
+      ).addTo(map);
+    }
+    bounds = L.latLngBounds(coords.map(c => [c[0], c[1]]));
+  } else {
+    const polyline = L.polyline(coords, {
+      color: '#E85D3F', weight: 4.5, opacity: 0.88,
+      lineJoin: 'round', lineCap: 'round'
+    }).addTo(map);
+    bounds = polyline.getBounds();
+  }
+
+  map.fitBounds(bounds, { padding: [48, 48] });
 
   // ── Lightbox ──────────────────────────────────────────
   const lightbox    = document.getElementById('lightbox');

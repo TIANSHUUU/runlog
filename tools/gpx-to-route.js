@@ -4,6 +4,7 @@
  * Usage: node tools/gpx-to-route.js your-run.gpx
  *
  * Outputs a route object you can copy-paste into data.js
+ * Coordinates include relative speed [lat, lng, speed] (0=slow, 1=fast)
  */
 
 const fs   = require('fs');
@@ -17,20 +18,17 @@ if (!file) {
 
 const xml = fs.readFileSync(file, 'utf8');
 
-// ── Extract track points ──────────────────────────────
-const trkptRe = /<trkpt\s+lat="([^"]+)"\s+lon="([^"]+)"/g;
+// ── Extract track points with timestamps ──────────────
+const trkptRe = /<trkpt\s+lat="([^"]+)"\s+lon="([^"]+)"[^>]*>([\s\S]*?)<\/trkpt>/g;
 const points = [];
 let m;
 while ((m = trkptRe.exec(xml)) !== null) {
-  points.push([parseFloat(m[1]), parseFloat(m[2])]);
-}
-
-if (points.length === 0) {
-  // Try alternate attribute order
-  const altRe = /<trkpt\s+lon="([^"]+)"\s+lat="([^"]+)"/g;
-  while ((m = altRe.exec(xml)) !== null) {
-    points.push([parseFloat(m[2]), parseFloat(m[1])]);
-  }
+  const lat  = parseFloat(m[1]);
+  const lng  = parseFloat(m[2]);
+  const body = m[3];
+  const tMatch = body.match(/<time>([^<]+)<\/time>/);
+  const t = tMatch ? new Date(tMatch[1]).getTime() : null;
+  points.push({ lat, lng, t });
 }
 
 if (points.length === 0) {
@@ -38,38 +36,74 @@ if (points.length === 0) {
   process.exit(1);
 }
 
-// ── Compute stats ─────────────────────────────────────
-function haversine([lat1, lon1], [lat2, lon2]) {
+// ── Haversine distance (meters) ───────────────────────
+function haversine(a, b) {
   const R = 6371e3;
-  const φ1 = lat1 * Math.PI / 180, φ2 = lat2 * Math.PI / 180;
-  const Δφ = (lat2 - lat1) * Math.PI / 180;
-  const Δλ = (lon2 - lon1) * Math.PI / 180;
-  const a = Math.sin(Δφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;
-  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  const φ1 = a.lat * Math.PI / 180, φ2 = b.lat * Math.PI / 180;
+  const Δφ = (b.lat - a.lat) * Math.PI / 180;
+  const Δλ = (b.lng - a.lng) * Math.PI / 180;
+  const s  = Math.sin(Δφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(s), Math.sqrt(1-s));
 }
 
+// ── Total distance ────────────────────────────────────
 let totalDist = 0;
-for (let i = 1; i < points.length; i++) {
-  totalDist += haversine(points[i-1], points[i]);
-}
-
+for (let i = 1; i < points.length; i++) totalDist += haversine(points[i-1], points[i]);
 const distKm    = (totalDist / 1000).toFixed(1);
-const centerLat = points.reduce((s, p) => s + p[0], 0) / points.length;
-const centerLng = points.reduce((s, p) => s + p[1], 0) / points.length;
+const centerLat = points.reduce((s, p) => s + p.lat, 0) / points.length;
+const centerLng = points.reduce((s, p) => s + p.lng, 0) / points.length;
 
-// ── Downsample coordinates (keep ≤ 120 points) ───────
-function downsample(pts, target) {
-  if (pts.length <= target) return pts;
-  const step = (pts.length - 1) / (target - 1);
-  const out = [];
-  for (let i = 0; i < target; i++) {
-    out.push(pts[Math.round(i * step)]);
+// ── Per-point speeds (m/s) ────────────────────────────
+const hasTime = points.every(p => p.t !== null);
+let speeds = new Array(points.length).fill(0);
+
+if (hasTime) {
+  // Speed at each point = avg of segment before + after
+  const segSpeeds = [];
+  for (let i = 1; i < points.length; i++) {
+    const dt = (points[i].t - points[i-1].t) / 1000; // seconds
+    const d  = haversine(points[i-1], points[i]);
+    segSpeeds.push(dt > 0 ? d / dt : 0);
   }
-  return out;
+  for (let i = 0; i < points.length; i++) {
+    const prev = i > 0                  ? segSpeeds[i-1] : segSpeeds[0];
+    const next = i < segSpeeds.length   ? segSpeeds[i]   : segSpeeds[segSpeeds.length-1];
+    speeds[i] = (prev + next) / 2;
+  }
+
+  // Rolling average (window=9) to smooth GPS noise
+  const win = 9, half = Math.floor(win/2);
+  const smoothed = speeds.map((_, i) => {
+    const lo = Math.max(0, i - half), hi = Math.min(speeds.length - 1, i + half);
+    let s = 0; for (let j = lo; j <= hi; j++) s += speeds[j];
+    return s / (hi - lo + 1);
+  });
+  speeds = smoothed;
+
+  // Normalize to 0–1 (clamp outliers at 5th/95th percentile)
+  const sorted = [...speeds].sort((a, b) => a - b);
+  const lo = sorted[Math.floor(sorted.length * 0.05)];
+  const hi = sorted[Math.floor(sorted.length * 0.95)];
+  const range = hi - lo || 1;
+  speeds = speeds.map(v => Math.max(0, Math.min(1, (v - lo) / range)));
 }
 
-const coords = downsample(points, 120)
-  .map(([lat, lng]) => `      [${lat.toFixed(6)}, ${lng.toFixed(6)}]`)
+// ── Downsample (keep ≤ 120 points) ───────────────────
+function downsample(pts, target) {
+  if (pts.length <= target) return pts.map((_, i) => i);
+  const step = (pts.length - 1) / (target - 1);
+  return Array.from({ length: target }, (_, i) => Math.round(i * step));
+}
+
+const indices = downsample(points, 120);
+const coords  = indices
+  .map(i => {
+    const p = points[i];
+    const s = hasTime ? speeds[i].toFixed(2) : null;
+    return s !== null
+      ? `      [${p.lat.toFixed(6)}, ${p.lng.toFixed(6)}, ${s}]`
+      : `      [${p.lat.toFixed(6)}, ${p.lng.toFixed(6)}]`;
+  })
   .join(',\n');
 
 // ── Try to extract name/date from GPX metadata ────────
@@ -77,44 +111,39 @@ const nameMatch = xml.match(/<name>([^<]+)<\/name>/);
 const timeMatch = xml.match(/<time>(\d{4}-\d{2})/);
 const gpxName   = nameMatch ? nameMatch[1].trim() : 'My Run';
 const gpxDate   = timeMatch ? timeMatch[1] : '2024-01';
-
-// ── Generate slug ─────────────────────────────────────
-const slug = path.basename(file, '.gpx')
+const slug      = path.basename(file, '.gpx')
   .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 // ── Output ────────────────────────────────────────────
 const output = `  {
     id: "${slug}",
     name: "${gpxName}",
-    location: "City, Country",          // ← 填写城市和国家
+    location: "City, Country",
+    country_iso: 0,                       // ← ISO 3166-1 numeric
     lat: ${centerLat.toFixed(6)},
     lng: ${centerLng.toFixed(6)},
     distance: "${distKm} km",
-    duration: "约 XX 分钟",             // ← 填写时长
-    difficulty: "轻松",                 // ← 轻松 / 适中 / 有挑战
-    surface: "沥青路",                  // ← 路面类型
-    elevation: "+XX m",                // ← 爬升高度
+    difficulty: "Easy",                   // ← Easy / Moderate / Challenging
+    surface: "Paved path",                // ← surface type
+    elevation: "< XX m",                  // ← elevation gain
     date: "${gpxDate}",
-    thumbnail: "images/${slug}/thumb.jpg",  // ← 封面图路径
-    description: "在这里写线路描述...",
-    vibe: "在这里写体感...",
-    highlights: [
-      { name: "地标名称", note: "一句话描述亮点" },
-      { name: "地标名称", note: "一句话描述亮点" },
-      { name: "地标名称", note: "一句话描述亮点" }
-    ],
-    photos: [
-      "images/${slug}/01.jpg",
-      "images/${slug}/02.jpg"
-    ],
+    thumbnail: "images/${slug}/thumb.jpg",
+    description_en: "",
+    description_zh: "",
+    vibe_en: "",
+    vibe_zh: "",
+    highlights: [],
+    photos: ["images/${slug}/thumb.jpg"],
+    nearby: [],
     coordinates: [
 ${coords}
     ]
   },`;
 
 console.log('\n✅  解析完成：');
-console.log(`   原始坐标点：${points.length} 个  →  精简后：${Math.min(points.length, 120)} 个`);
+console.log(`   原始坐标点：${points.length} 个  →  精简后：${indices.length} 个`);
 console.log(`   距离估算：${distKm} km`);
+console.log(`   速度数据：${hasTime ? '✓ 已提取相对速度' : '✗ 无时间戳，仅坐标'}`);
 console.log(`   中心坐标：${centerLat.toFixed(5)}, ${centerLng.toFixed(5)}`);
 console.log('\n── 复制以下内容，粘贴进 data.js 的 ROUTES 数组 ──────────────\n');
 console.log(output);
