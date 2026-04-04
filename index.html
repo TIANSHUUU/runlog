@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tianshu's Runlog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { overflow: hidden; }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <span class="logo">🏃‍♀️ Tianshu's Runlog</span>
+    <span class="route-count" id="route-count"></span>
+  </header>
+
+  <div id="map"></div>
+
+  <!-- Hover card -->
+  <div class="hover-card hidden" id="hover-card">
+    <img id="card-thumb" src="" alt="">
+    <div class="hover-card-body">
+      <div class="card-name" id="card-name"></div>
+      <div class="card-location" id="card-location"></div>
+      <div class="card-meta">
+        <span class="card-distance" id="card-distance"></span>
+        <span class="badge" id="card-difficulty"></span>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="data.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
