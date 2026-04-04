@@ -1,13 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
 
   // ── Map init ──────────────────────────────────────────
-  const map = L.map('map', { zoomControl: false })
-    .setView([28, 15], 2);
+  const map = L.map('map', {
+    zoomControl: false,
+    worldCopyJump: false,
+    maxBounds: [[-85, -180], [85, 180]],
+    maxBoundsViscosity: 1.0
+  }).setView([28, 15], 2);
 
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-    subdomains: 'abcd',
-    maxZoom: 20
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles &copy; <a href="https://www.esri.com/">Esri</a>',
+    maxZoom: 16,
+    noWrap: true
+  }).addTo(map);
+
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 16,
+    noWrap: true
   }).addTo(map);
 
   L.control.zoom({ position: 'bottomright' }).addTo(map);
