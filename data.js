@@ -199,7 +199,7 @@ const ROUTES = [
       }
     ],
     photos: [
-      "images/gardiners-creek-trail/thumb.jpg",
+      "images/gardiners-creek-trail/01.jpg",
       "images/gardiners-creek-trail/02.jpg"
     ],
     nearby: [],
