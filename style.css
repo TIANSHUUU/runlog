@@ -39,7 +39,7 @@ body {
 .route-count { font-size: 13px; color: var(--muted); }
 
 /* ─── Map page ───────────────────────────────────────── */
-#map { width: 100vw; height: 100vh; }
+#map { width: 100vw; height: 100vh; background: #d4e0e8; }
 
 /* ─── Dot markers ────────────────────────────────────── */
 .dot {
