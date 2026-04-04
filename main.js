@@ -4,13 +4,32 @@ document.addEventListener('DOMContentLoaded', () => {
   const map = L.map('map', { zoomControl: false })
     .setView([28, 15], 2);
 
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
     subdomains: 'abcd',
     maxZoom: 20
   }).addTo(map);
 
   L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+  // ── Country highlights ────────────────────────────────
+  const highlightISOs = new Set(ROUTES.map(r => r.country_iso).filter(Boolean));
+  if (highlightISOs.size > 0) {
+    fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+      .then(r => r.json())
+      .then(world => {
+        const geojson = topojson.feature(world, world.objects.countries);
+        L.geoJSON(geojson, {
+          interactive: false,
+          style: feature => {
+            if (highlightISOs.has(parseInt(feature.id))) {
+              return { fillColor: '#3B70D6', fillOpacity: 0.14, color: '#3B70D6', weight: 1.2, opacity: 0.45 };
+            }
+            return { fill: false, stroke: false };
+          }
+        }).addTo(map);
+      });
+  }
 
   // ── Route count ───────────────────────────────────────
   document.getElementById('route-count').textContent = `${ROUTES.length} 条线路`;
