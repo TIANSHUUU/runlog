@@ -106,12 +106,8 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(world => {
         const geojson = topojson.feature(world, world.objects.countries);
         L.geoJSON(geojson, {
-          style: feature => {
-            if (highlightISOs.has(parseInt(feature.id))) {
-              return { fillColor: '#3B70D6', fillOpacity: 0.14, color: '#3B70D6', weight: 1.2, opacity: 0.45 };
-            }
-            return { fill: false, stroke: false };
-          },
+          filter: feature => highlightISOs.has(parseInt(feature.id)),
+          style: () => ({ fillColor: '#3B70D6', fillOpacity: 0.14, color: '#3B70D6', weight: 1.2, opacity: 0.45 }),
           onEachFeature: (feature, layer) => {
             const iso    = parseInt(feature.id);
             const routes = routesByISO[iso];
