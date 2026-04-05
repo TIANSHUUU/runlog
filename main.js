@@ -68,8 +68,12 @@ document.addEventListener('DOMContentLoaded', () => {
     countryCard.style.top  = y + 'px';
   }
 
-  function showCountryCard(routes, pt) {
+  // Track which layer is currently highlighted so card mouseleave can reference it
+  let activeCountryLayer = null;
+
+  function showCountryCard(routes, pt, layer) {
     clearTimeout(countryHideTimer);
+    activeCountryLayer = layer;
     countryCardList.innerHTML = '';
     routes.forEach(route => {
       const item = document.createElement('div');
@@ -78,9 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <img class="country-route-thumb" src="${route.thumbnail}" alt="">
         <span class="country-route-name">${route.name}</span>
       `;
-      item.addEventListener('click',      () => { location.href = `route.html?id=${route.id}`; });
-      item.addEventListener('mouseenter', () => clearTimeout(countryHideTimer));
-      item.addEventListener('mouseleave', () => hideCountryCard());
+      item.addEventListener('click', () => { location.href = `route.html?id=${route.id}`; });
       countryCardList.appendChild(item);
     });
     positionCountryCard(pt);
@@ -88,8 +90,23 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function hideCountryCard(delay = 160) {
-    countryHideTimer = setTimeout(() => countryCard.classList.add('hidden'), delay);
+    countryHideTimer = setTimeout(() => {
+      countryCard.classList.add('hidden');
+      activeCountryLayer = null;
+    }, delay);
   }
+
+  // Card itself: keep alive when mouse enters, hide when mouse leaves
+  countryCard.addEventListener('mouseenter', () => clearTimeout(countryHideTimer));
+  countryCard.addEventListener('mouseleave', e => {
+    // Don't hide if mouse moved back onto the polygon
+    const rel = e.relatedTarget;
+    if (rel && rel.closest && rel.closest('.leaflet-interactive')) {
+      clearTimeout(countryHideTimer);
+      return;
+    }
+    hideCountryCard();
+  });
 
   // ── Country highlights + hover ────────────────────────
   if (highlightISOs.size > 0) {
@@ -113,11 +130,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             layer.on('mouseover', e => {
               if (markerHovered) return;
+              // Don't re-show if mouse came from the card itself
+              const rel = e.originalEvent.relatedTarget;
+              if (rel && countryCard.contains(rel)) return;
               layer.setStyle({ fillOpacity: 0.22 });
-              showCountryCard(routes, e.containerPoint);
+              showCountryCard(routes, e.containerPoint, layer);
             });
-            layer.on('mouseout', () => {
+            layer.on('mouseout', e => {
               layer.setStyle({ fillOpacity: 0.14 });
+              // Don't hide if mouse moved onto the card
+              const rel = e.originalEvent.relatedTarget;
+              if (rel && countryCard.contains(rel)) return;
               hideCountryCard();
             });
           }
