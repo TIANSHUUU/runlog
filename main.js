@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     worldCopyJump: false,
     maxBounds: [[-85, -180], [85, 180]],
     maxBoundsViscosity: 1.0
-  }).setView([28, 15], 2);
+  }).setView([20, 120], 3);
 
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
@@ -14,6 +14,12 @@ document.addEventListener('DOMContentLoaded', () => {
     maxZoom: 20,
     noWrap: true
   }).addTo(map);
+
+  // ── Auto-fit map to show all route locations ──────────
+  if (ROUTES.length > 0) {
+    const bounds = L.latLngBounds(ROUTES.map(r => [r.lat, r.lng]));
+    map.fitBounds(bounds, { padding: [100, 140], maxZoom: 5 });
+  }
 
   // ── Continent labels (English, custom) ────────────────
   const continents = [
@@ -50,22 +56,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   const highlightISOs = new Set(Object.keys(routesByISO).map(Number));
 
-  // ── Country card (multi-route hover list) ─────────────
+  // ── Country card (click-to-show) ──────────────────────
   const countryCard     = document.getElementById('country-card');
   const countryCardList = document.getElementById('country-card-list');
-  let countryHideTimer;
-
-  // Track real mouse position so hide timer can verify before hiding
-  let mouseX = 0, mouseY = 0;
-  document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
-
-  function isMouseOverCardOrPolygon() {
-    const els = document.elementsFromPoint(mouseX, mouseY);
-    return els.some(el =>
-      el === countryCard || countryCard.contains(el) ||
-      el.classList.contains('leaflet-interactive')
-    );
-  }
 
   function positionCountryCard(pt) {
     const W  = countryCard.offsetWidth  || 220;
@@ -80,11 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     countryCard.style.top  = y + 'px';
   }
 
-  let activeCountryLayer = null;
-
-  function showCountryCard(routes, pt, layer) {
-    clearTimeout(countryHideTimer);
-    activeCountryLayer = layer;
+  function showCountryCard(routes, pt) {
     countryCardList.innerHTML = '';
     routes.forEach(route => {
       const item = document.createElement('div');
@@ -93,27 +82,24 @@ document.addEventListener('DOMContentLoaded', () => {
         <img class="country-route-thumb" src="${route.thumbnail}" alt="">
         <span class="country-route-name">${route.name}</span>
       `;
-      item.addEventListener('click', () => { location.href = `route.html?id=${route.id}`; });
+      item.addEventListener('click', e => {
+        e.stopPropagation();
+        location.href = `route.html?id=${route.id}`;
+      });
       countryCardList.appendChild(item);
     });
     positionCountryCard(pt);
     countryCard.classList.remove('hidden');
   }
 
-  function hideCountryCard(delay = 200) {
-    clearTimeout(countryHideTimer);
-    countryHideTimer = setTimeout(() => {
-      if (!isMouseOverCardOrPolygon()) {
-        countryCard.classList.add('hidden');
-        activeCountryLayer = null;
-      }
-    }, delay);
+  function hideCountryCard() {
+    countryCard.classList.add('hidden');
   }
 
-  countryCard.addEventListener('mouseenter', () => clearTimeout(countryHideTimer));
-  countryCard.addEventListener('mouseleave', () => hideCountryCard());
+  // Clicking anywhere on the map closes the card
+  map.on('click', hideCountryCard);
 
-  // ── Country highlights + hover ────────────────────────
+  // ── Country highlights + click ────────────────────────
   if (highlightISOs.size > 0) {
     fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
       .then(r => r.json())
@@ -133,14 +119,13 @@ document.addEventListener('DOMContentLoaded', () => {
               layer.options.interactive = false;
               return;
             }
-            layer.on('mouseover', e => {
-              if (markerHovered) return;
-              layer.setStyle({ fillOpacity: 0.22 });
-              showCountryCard(routes, e.containerPoint, layer);
-            });
-            layer.on('mouseout', () => {
-              layer.setStyle({ fillOpacity: 0.14 });
-              hideCountryCard();
+            // Highlight on hover (visual feedback only)
+            layer.on('mouseover', () => layer.setStyle({ fillOpacity: 0.22 }));
+            layer.on('mouseout',  () => layer.setStyle({ fillOpacity: 0.14 }));
+            // Click to show route list
+            layer.on('click', e => {
+              L.DomEvent.stopPropagation(e);
+              showCountryCard(routes, e.containerPoint);
             });
           }
         }).addTo(map);
@@ -186,8 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ── Markers ───────────────────────────────────────────
-  let markerHovered = false;
-
   ROUTES.forEach(route => {
     const icon = L.divIcon({
       className: '',
@@ -197,9 +180,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const marker = L.marker([route.lat, route.lng], { icon }).addTo(map);
-    marker.on('mouseover', () => { markerHovered = true;  showCard(route); });
-    marker.on('mouseout',  () => { markerHovered = false; hideCard(); });
-    marker.on('click',     () => { location.href = `route.html?id=${route.id}`; });
+    marker.on('mouseover', () => showCard(route));
+    marker.on('mouseout',  () => hideCard());
+    marker.on('click',     e => {
+      L.DomEvent.stopPropagation(e);
+      location.href = `route.html?id=${route.id}`;
+    });
   });
 
   card.addEventListener('mouseenter', () => clearTimeout(hideTimer));
