@@ -38,8 +38,13 @@ body {
 .logo { font-family: 'Pacifico', cursive; font-size: 18px; font-weight: 400; color: var(--accent); }
 .route-count { font-size: 13px; color: var(--muted); }
 
-/* ─── Map page ───────────────────────────────────────── */
-#map { width: 100vw; height: 100vh; background: #c4ced6; }
+/* ─── Overview map ───────────────────────────────────── */
+#map {
+  width: 100vw; height: 44vh; min-height: 260px;
+  background: #c4ced6;
+  margin-top: var(--hh);
+  cursor: default;
+}
 
 /* ─── Dot markers ────────────────────────────────────── */
 .dot {
@@ -332,9 +337,69 @@ body {
   font-family: var(--font);
 }
 
+/* ─── Route list section ─────────────────────────────── */
+.route-list-section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 36px 24px 80px;
+}
+
+.route-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.route-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  background: var(--white);
+  border-radius: var(--r);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: box-shadow 0.18s ease, transform 0.18s ease;
+}
+.route-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.route-card-img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+.route-card-body {
+  padding: 14px 16px 16px;
+}
+.route-card-name {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.route-card-location {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.route-card-stats {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.route-card-distance {
+  font-size: 13px;
+  color: var(--muted);
+}
+
 /* ─── Mobile ──────────────────────────────────────────── */
 @media (max-width: 600px) {
   .header, .route-header { padding: 0 16px; }
+  #map { height: 36vh; }
+  .route-list-section { padding: 24px 16px 60px; }
+  .route-grid { grid-template-columns: 1fr; gap: 14px; }
   .route-content { padding: 0 16px 60px; }
   .route-meta h1 { font-size: 22px; }
   .photos-grid { grid-template-columns: 1fr; }

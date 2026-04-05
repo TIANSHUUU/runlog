@@ -3,6 +3,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── Map init ──────────────────────────────────────────
   const map = L.map('map', {
     zoomControl: false,
+    scrollWheelZoom: false,
+    dragging: false,
+    doubleClickZoom: false,
+    boxZoom: false,
+    keyboard: false,
+    touchZoom: false,
     worldCopyJump: false,
     maxBounds: [[-85, -180], [85, 180]],
     maxBoundsViscosity: 1.0
@@ -15,13 +21,13 @@ document.addEventListener('DOMContentLoaded', () => {
     noWrap: true
   }).addTo(map);
 
-  // ── Auto-fit map to show all route locations ──────────
+  // Auto-fit to all route locations
   if (ROUTES.length > 0) {
     const bounds = L.latLngBounds(ROUTES.map(r => [r.lat, r.lng]));
-    map.fitBounds(bounds, { padding: [100, 140], maxZoom: 5 });
+    map.fitBounds(bounds, { padding: [60, 100], maxZoom: 5 });
   }
 
-  // ── Continent labels (English, custom) ────────────────
+  // ── Continent labels ──────────────────────────────────
   const continents = [
     { name: 'NORTH AMERICA', lat: 50,  lng: -100 },
     { name: 'SOUTH AMERICA', lat: -15, lng:  -58  },
@@ -31,23 +37,18 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: 'OCEANIA',       lat: -27, lng:  134  },
     { name: 'ANTARCTICA',    lat: -80, lng:    0  }
   ];
-
   continents.forEach(({ name, lat, lng }) => {
     L.marker([lat, lng], {
       icon: L.divIcon({
         className: '',
         html: `<span class="continent-label">${name}</span>`,
-        iconSize:   [0, 0],
-        iconAnchor: [0, 0]
+        iconSize: [0, 0], iconAnchor: [0, 0]
       }),
-      interactive:    false,
-      zIndexOffset: -1000
+      interactive: false, zIndexOffset: -1000
     }).addTo(map);
   });
 
-  L.control.zoom({ position: 'bottomright' }).addTo(map);
-
-  // ── Group routes by country ISO ───────────────────────
+  // ── Country highlights (decorative only, no interaction) ─
   const routesByISO = {};
   ROUTES.forEach(r => {
     if (!r.country_iso) return;
@@ -56,50 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   const highlightISOs = new Set(Object.keys(routesByISO).map(Number));
 
-  // ── Country card (click-to-show) ──────────────────────
-  const countryCard     = document.getElementById('country-card');
-  const countryCardList = document.getElementById('country-card-list');
-
-  function positionCountryCard(pt) {
-    const W  = countryCard.offsetWidth  || 220;
-    const H  = countryCard.offsetHeight || 120;
-    const vw = window.innerWidth, vh = window.innerHeight;
-    let x = pt.x + 18;
-    let y = pt.y - H / 2;
-    if (x + W > vw - 16) x = pt.x - W - 18;
-    if (y < 66)          y = 66;
-    if (y + H > vh - 16) y = vh - H - 16;
-    countryCard.style.left = x + 'px';
-    countryCard.style.top  = y + 'px';
-  }
-
-  function showCountryCard(routes, pt) {
-    countryCardList.innerHTML = '';
-    routes.forEach(route => {
-      const item = document.createElement('div');
-      item.className = 'country-route-item';
-      item.innerHTML = `
-        <img class="country-route-thumb" src="${route.thumbnail}" alt="">
-        <span class="country-route-name">${route.name}</span>
-      `;
-      item.addEventListener('click', e => {
-        e.stopPropagation();
-        location.href = `route.html?id=${route.id}`;
-      });
-      countryCardList.appendChild(item);
-    });
-    positionCountryCard(pt);
-    countryCard.classList.remove('hidden');
-  }
-
-  function hideCountryCard() {
-    countryCard.classList.add('hidden');
-  }
-
-  // Clicking anywhere on the map closes the card
-  map.on('click', hideCountryCard);
-
-  // ── Country highlights + click ────────────────────────
   if (highlightISOs.size > 0) {
     fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
       .then(r => r.json())
@@ -107,34 +64,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const geojson = topojson.feature(world, world.objects.countries);
         L.geoJSON(geojson, {
           filter: feature => highlightISOs.has(parseInt(feature.id)),
-          style: () => ({ fillColor: '#3B70D6', fillOpacity: 0.14, color: '#3B70D6', weight: 1.2, opacity: 0.45 }),
-          onEachFeature: (feature, layer) => {
-            const iso    = parseInt(feature.id);
-            const routes = routesByISO[iso];
-            if (!routes || routes.length < 2) {
-              layer.options.interactive = false;
-              return;
-            }
-            // Highlight on hover (visual feedback only)
-            layer.on('mouseover', () => layer.setStyle({ fillOpacity: 0.22 }));
-            layer.on('mouseout',  () => layer.setStyle({ fillOpacity: 0.14 }));
-            // Click to show route list
-            layer.on('click', e => {
-              L.DomEvent.stopPropagation(e);
-              showCountryCard(routes, e.containerPoint);
-            });
-          }
+          style: () => ({
+            fillColor: '#3B70D6', fillOpacity: 0.14,
+            color: '#3B70D6', weight: 1.2, opacity: 0.45,
+            interactive: false
+          })
         }).addTo(map);
       });
   }
 
-  // ── Route count ───────────────────────────────────────
-  document.getElementById('route-count').textContent = `${ROUTES.length} 条线路`;
-
-  // ── Single-route hover card ───────────────────────────
+  // ── Dot markers with hover card ───────────────────────
   const card  = document.getElementById('hover-card');
   const thumb = document.getElementById('card-thumb');
-  const name  = document.getElementById('card-name');
+  const cname = document.getElementById('card-name');
   const loc   = document.getElementById('card-location');
   const dist  = document.getElementById('card-distance');
   const diff  = document.getElementById('card-difficulty');
@@ -143,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function showCard(route) {
     clearTimeout(hideTimer);
     thumb.src        = route.thumbnail;
-    name.textContent = route.name;
+    cname.textContent = route.name;
     loc.textContent  = route.location;
     dist.textContent = route.distance;
     diff.textContent = route.difficulty;
@@ -152,8 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pt = map.latLngToContainerPoint([route.lat, route.lng]);
     const W = 238, H = 192;
     const vw = window.innerWidth, vh = window.innerHeight;
-    let x = pt.x + 18;
-    let y = pt.y - H / 2;
+    let x = pt.x + 18, y = pt.y - H / 2;
     if (x + W > vw - 16) x = pt.x - W - 18;
     if (y < 66)          y = 66;
     if (y + H > vh - 16) y = vh - H - 16;
@@ -166,26 +107,43 @@ document.addEventListener('DOMContentLoaded', () => {
     hideTimer = setTimeout(() => card.classList.add('hidden'), delay);
   }
 
-  // ── Markers ───────────────────────────────────────────
   ROUTES.forEach(route => {
-    const icon = L.divIcon({
-      className: '',
-      html: '<div class="dot"></div>',
-      iconSize:   [20, 20],
-      iconAnchor: [10, 10]
-    });
-
-    const marker = L.marker([route.lat, route.lng], { icon }).addTo(map);
+    const marker = L.marker([route.lat, route.lng], {
+      icon: L.divIcon({
+        className: '',
+        html: '<div class="dot"></div>',
+        iconSize: [20, 20], iconAnchor: [10, 10]
+      })
+    }).addTo(map);
     marker.on('mouseover', () => showCard(route));
     marker.on('mouseout',  () => hideCard());
-    marker.on('click',     e => {
-      L.DomEvent.stopPropagation(e);
-      location.href = `route.html?id=${route.id}`;
-    });
+    marker.on('click',     () => { location.href = `route.html?id=${route.id}`; });
   });
 
   card.addEventListener('mouseenter', () => clearTimeout(hideTimer));
   card.addEventListener('mouseleave', () => hideCard());
-  card.addEventListener('click',      () => { location.href = `route.html?id=${card.dataset.id}`; });
+  card.addEventListener('click', () => { location.href = `route.html?id=${card.dataset.id}`; });
+
+  // ── Route count ───────────────────────────────────────
+  document.getElementById('route-count').textContent = `${ROUTES.length} routes`;
+
+  // ── Route card list ───────────────────────────────────
+  const grid = document.getElementById('route-grid');
+  ROUTES.forEach(route => {
+    const a = document.createElement('a');
+    a.href      = `route.html?id=${route.id}`;
+    a.className = 'route-card';
+    a.innerHTML = `
+      <img class="route-card-img" src="${route.thumbnail}" alt="${route.name}" loading="lazy">
+      <div class="route-card-body">
+        <div class="route-card-name">${route.name}</div>
+        <div class="route-card-location">${route.location}</div>
+        <div class="route-card-stats">
+          <span class="route-card-distance">${route.distance}</span>
+          <span class="badge">${route.difficulty}</span>
+        </div>
+      </div>`;
+    grid.appendChild(a);
+  });
 
 });

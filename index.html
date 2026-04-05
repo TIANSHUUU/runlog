@@ -8,9 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css">
-  <style>
-    body { overflow: hidden; }
-  </style>
 </head>
 <body>
 
@@ -19,14 +16,10 @@
     <span class="route-count" id="route-count"></span>
   </header>
 
+  <!-- Overview map (decorative) -->
   <div id="map"></div>
 
-  <!-- Country multi-route card -->
-  <div class="country-card hidden" id="country-card">
-    <div id="country-card-list"></div>
-  </div>
-
-  <!-- Hover card -->
+  <!-- Dot hover card -->
   <div class="hover-card hidden" id="hover-card">
     <img id="card-thumb" src="" alt="">
     <div class="hover-card-body">
@@ -38,6 +31,11 @@
       </div>
     </div>
   </div>
+
+  <!-- Route card list -->
+  <main class="route-list-section">
+    <div class="route-grid" id="route-grid"></div>
+  </main>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
