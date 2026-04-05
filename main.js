@@ -4,15 +4,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const map = L.map('map', {
     zoomControl: false,
     scrollWheelZoom: false,
-    dragging: false,
-    doubleClickZoom: false,
-    boxZoom: false,
-    keyboard: false,
-    touchZoom: false,
     worldCopyJump: false,
     maxBounds: [[-85, -180], [85, 180]],
     maxBoundsViscosity: 1.0
   }).setView([20, 120], 3);
+
+  L.control.zoom({ position: 'bottomright' }).addTo(map);
 
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
@@ -24,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Auto-fit to all route locations
   if (ROUTES.length > 0) {
     const bounds = L.latLngBounds(ROUTES.map(r => [r.lat, r.lng]));
-    map.fitBounds(bounds, { padding: [60, 100], maxZoom: 5 });
+    map.fitBounds(bounds, { padding: [60, 100], maxZoom: 4 });
   }
 
   // ── Continent labels ──────────────────────────────────
