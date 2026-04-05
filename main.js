@@ -55,6 +55,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const countryCardList = document.getElementById('country-card-list');
   let countryHideTimer;
 
+  // Track real mouse position so hide timer can verify before hiding
+  let mouseX = 0, mouseY = 0;
+  document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+
+  function isMouseOverCardOrPolygon() {
+    const els = document.elementsFromPoint(mouseX, mouseY);
+    return els.some(el =>
+      el === countryCard || countryCard.contains(el) ||
+      el.classList.contains('leaflet-interactive')
+    );
+  }
+
   function positionCountryCard(pt) {
     const W  = countryCard.offsetWidth  || 220;
     const H  = countryCard.offsetHeight || 120;
@@ -68,7 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
     countryCard.style.top  = y + 'px';
   }
 
-  // Track which layer is currently highlighted so card mouseleave can reference it
   let activeCountryLayer = null;
 
   function showCountryCard(routes, pt, layer) {
@@ -89,24 +100,18 @@ document.addEventListener('DOMContentLoaded', () => {
     countryCard.classList.remove('hidden');
   }
 
-  function hideCountryCard(delay = 160) {
+  function hideCountryCard(delay = 200) {
+    clearTimeout(countryHideTimer);
     countryHideTimer = setTimeout(() => {
-      countryCard.classList.add('hidden');
-      activeCountryLayer = null;
+      if (!isMouseOverCardOrPolygon()) {
+        countryCard.classList.add('hidden');
+        activeCountryLayer = null;
+      }
     }, delay);
   }
 
-  // Card itself: keep alive when mouse enters, hide when mouse leaves
   countryCard.addEventListener('mouseenter', () => clearTimeout(countryHideTimer));
-  countryCard.addEventListener('mouseleave', e => {
-    // Don't hide if mouse moved back onto the polygon
-    const rel = e.relatedTarget;
-    if (rel && rel.closest && rel.closest('.leaflet-interactive')) {
-      clearTimeout(countryHideTimer);
-      return;
-    }
-    hideCountryCard();
-  });
+  countryCard.addEventListener('mouseleave', () => hideCountryCard());
 
   // ── Country highlights + hover ────────────────────────
   if (highlightISOs.size > 0) {
@@ -130,17 +135,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             layer.on('mouseover', e => {
               if (markerHovered) return;
-              // Don't re-show if mouse came from the card itself
-              const rel = e.originalEvent.relatedTarget;
-              if (rel && countryCard.contains(rel)) return;
               layer.setStyle({ fillOpacity: 0.22 });
               showCountryCard(routes, e.containerPoint, layer);
             });
-            layer.on('mouseout', e => {
+            layer.on('mouseout', () => {
               layer.setStyle({ fillOpacity: 0.14 });
-              // Don't hide if mouse moved onto the card
-              const rel = e.originalEvent.relatedTarget;
-              if (rel && countryCard.contains(rel)) return;
               hideCountryCard();
             });
           }
