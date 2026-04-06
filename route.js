@@ -22,7 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('stat-distance').textContent     = route.distance;
   document.getElementById('stat-elevation').textContent    = route.elevation;
   document.getElementById('stat-surface').textContent      = route.surface;
-  document.getElementById('stat-difficulty').textContent   = route.difficulty;
+  const diffEl = document.getElementById('stat-difficulty');
+  diffEl.textContent        = route.difficulty;
+  diffEl.dataset.difficulty = route.difficulty;
   // Description: support legacy single-language or bilingual fields
   const descEn = route.description_en || route.description || '';
   const descZh = route.description_zh || '';

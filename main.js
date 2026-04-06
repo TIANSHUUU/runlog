@@ -85,7 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
     cname.textContent = route.name;
     loc.textContent  = route.location;
     dist.textContent = route.distance;
-    diff.textContent = route.difficulty;
+    diff.textContent          = route.difficulty;
+    diff.dataset.difficulty   = route.difficulty;
     card.dataset.id  = route.id;
 
     const pt = map.latLngToContainerPoint([route.lat, route.lng]);
@@ -137,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="route-card-location">${route.location}</div>
         <div class="route-card-stats">
           <span class="route-card-distance">${route.distance}</span>
-          <span class="badge">${route.difficulty}</span>
+          <span class="badge" data-difficulty="${route.difficulty}">${route.difficulty}</span>
         </div>
       </div>`;
     grid.appendChild(a);
