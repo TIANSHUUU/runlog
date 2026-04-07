@@ -114,6 +114,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   map.fitBounds(bounds, { padding: [48, 48] });
 
+  // ── Start / Finish markers ─────────────────────────────
+  function makeMarker(latlng, type, label) {
+    const icon = L.divIcon({
+      className: '',
+      html: `<div class="map-pin map-pin--${type}">${type === 'start' ? 'S' : 'F'}</div>`,
+      iconSize: [26, 26],
+      iconAnchor: [13, 13],
+    });
+    L.marker(latlng, { icon, interactive: false }).addTo(map);
+  }
+  if (route.start) makeMarker(route.start, 'start');
+  if (route.end)   makeMarker(route.end,   'finish');
+
   // ── Lightbox ──────────────────────────────────────────
   const lightbox    = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
