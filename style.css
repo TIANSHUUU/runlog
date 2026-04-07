@@ -153,6 +153,19 @@ body {
 .map-pin--start  { background: #1A7F4B; }
 .map-pin--finish { background: #E85D3F; }
 
+/* ─── Route points (Start / Finish links) ────────────── */
+.route-points {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 20px; font-size: 13px;
+}
+.route-point-link {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.route-point-link:hover { color: var(--accent); }
+.route-point-sep { color: var(--muted); }
+
 /* ─── Route content ──────────────────────────────────── */
 .route-content { max-width: 700px; margin: 0 auto; padding: 0 24px 80px; }
 

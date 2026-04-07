@@ -25,6 +25,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const diffEl = document.getElementById('stat-difficulty');
   diffEl.textContent        = route.difficulty;
   diffEl.dataset.difficulty = route.difficulty;
+  // ── Start / Finish Google Maps links ─────────────────
+  const pointsEl = document.getElementById('route-points');
+  if (route.start || route.end) {
+    const mapsLink = (latlng, label) => {
+      const url = `https://www.google.com/maps?q=${latlng[0]},${latlng[1]}`;
+      return `<a class="route-point-link" href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>`;
+    };
+    const parts = [];
+    if (route.start) parts.push(mapsLink(route.start, 'Start point'));
+    if (route.end)   parts.push(mapsLink(route.end,   'Finish point'));
+    pointsEl.innerHTML = parts.join('<span class="route-point-sep">·</span>');
+  }
+
   // Description: support legacy single-language or bilingual fields
   const descEn = route.description_en || route.description || '';
   const descZh = route.description_zh || '';
