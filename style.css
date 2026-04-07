@@ -154,9 +154,13 @@ body {
 .map-pin--finish { background: #E85D3F; }
 
 /* ─── Route points (Start / Finish links) ────────────── */
+.route-title-row {
+  display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
+}
+.route-title-row h1 { margin: 0; }
 .route-points {
   display: flex; align-items: center; gap: 10px;
-  margin-bottom: 20px; font-size: 13px;
+  font-size: 13px; white-space: nowrap;
 }
 .route-point-link {
   color: var(--text);
