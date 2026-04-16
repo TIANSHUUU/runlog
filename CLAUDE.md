@@ -98,6 +98,8 @@ images/
 - **Bilingual content**: all user-facing text has `_en` and `_zh` variants. Written as natural prose, not robotic translation
 - **country_iso**: always set — needed for blue country highlight on world map
 - **Section titles**: keep blue `#3B70D6` — gray was tested and rejected
+- **Photo thumbnails**: all `object-fit: cover` images must use `object-position: center` — show the center of the image, not the top
+- **Avoid orphan characters**: if a line of text leaves only 1–2 characters on the next line, shorten or rephrase to eliminate the widow. Applies to both EN and ZH
 
 ## Tech stack details
 - **Homepage map**: Leaflet.js 1.9.4, CartoDB `light_nolabels`, decorative only

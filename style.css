@@ -35,7 +35,8 @@ body {
   -webkit-backdrop-filter: blur(18px) saturate(180%);
   border-bottom: 1px solid rgba(0,0,0,0.06);
 }
-.logo { font-family: 'Pacifico', cursive; font-size: 18px; font-weight: 400; color: var(--accent); }
+.logo { font-family: 'Pacifico', cursive; font-size: 18px; font-weight: 400; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+.logo-icon { width: 32px; height: 32px; flex-shrink: 0; border-radius: 6px; }
 .route-count { font-size: 13px; color: var(--muted); }
 
 /* ─── Overview map ───────────────────────────────────── */
@@ -94,7 +95,7 @@ body {
 .country-card.hidden { display: none; }
 .hover-card img {
   width: 100%; height: 136px;
-  object-fit: cover; display: block;
+  object-fit: cover; object-position: center; display: block;
 }
 .hover-card-body { padding: 11px 13px 14px; }
 .card-name {
@@ -272,7 +273,7 @@ body {
 .photos-grid {
   display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px;
 }
-.route-photo { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 9px; }
+.route-photo { width: 100%; aspect-ratio: 4/3; object-fit: cover; object-position: center; border-radius: 9px; }
 
 /* 1 photo: full width */
 .photos-grid .route-photo:first-child:last-child { grid-column: 1 / -1; aspect-ratio: 16/9; }
@@ -304,7 +305,7 @@ body {
 .country-route-thumb {
   width: 54px; height: 40px;
   border-radius: 6px;
-  object-fit: cover; flex-shrink: 0;
+  object-fit: cover; object-position: center; flex-shrink: 0;
 }
 .country-route-name {
   font-size: 13px; font-weight: 500;
@@ -352,6 +353,17 @@ body {
   transition: color 0.15s;
 }
 .lightbox-close:hover { color: #fff; }
+.lightbox-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,0.12); border: none; border-radius: 50%;
+  width: 48px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.75); cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.lightbox-nav:hover { background: rgba(255,255,255,0.25); color: #fff; }
+.lightbox-prev { left: 16px; }
+.lightbox-next { right: 16px; }
 .route-photo { cursor: zoom-in; }
 
 /* Leaflet tweaks */
@@ -404,6 +416,7 @@ body {
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
+  object-position: center;
   display: block;
 }
 .route-card-body {

@@ -551,7 +551,7 @@ const ROUTES = [
       {
         name: "Be Marsupial Gift Shop",
         note_en: "A Spanish designer's indie souvenir shop on Acland Street — playful, locally rooted designs at every price point. Nothing off a factory line.",
-        note_zh: "Acland Street 上一家西班牙设计师开的原创纪念品店，设计幽默、在地感强，价格丰俭由人，没有一件是流水线货。",
+        note_zh: "Acland Street 上西班牙设计师开的原创纪念品店，设计幽默、在地感强，丰俭由人，件件都是手工原创。",
         maps_url: "https://www.google.com/maps/place/Be+Marsupial+%C2%B7+Australian-themed+gifts+and+cool+souvenirs/@-37.8670588,144.9759609,17z/data=!3m1!4b1!4m6!3m5!1s0x6ad6688cdf752e49:0xe5828397198facaa!8m2!3d-37.8670631!4d144.9785358!16s%2Fg%2F11c2lvqx5z?entry=ttu&g_ep=EgoyMDI2MDQxMy4wIKXMDSoASAFQAw%3D%3D"
       }
     ],

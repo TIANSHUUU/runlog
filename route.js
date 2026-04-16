@@ -140,13 +140,24 @@ document.addEventListener('DOMContentLoaded', () => {
   if (route.start) makeMarker(route.start, 'start');
   if (route.end)   makeMarker(route.end,   'finish');
 
-  // ── Lightbox ──────────────────────────────────────────
+  // ── Lightbox with navigation ───────────────────────────
   const lightbox    = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
+  const prevBtn     = document.getElementById('lightbox-prev');
+  const nextBtn     = document.getElementById('lightbox-next');
+  let currentIndex  = 0;
+  const photoSrcs   = route.photos || [];
 
-  function openLightbox(src, alt) {
-    lightboxImg.src = src;
-    lightboxImg.alt = alt;
+  function showPhoto(index) {
+    currentIndex = (index + photoSrcs.length) % photoSrcs.length;
+    lightboxImg.src = photoSrcs[currentIndex];
+    lightboxImg.alt = route.name;
+    prevBtn.style.display = photoSrcs.length > 1 ? '' : 'none';
+    nextBtn.style.display = photoSrcs.length > 1 ? '' : 'none';
+  }
+
+  function openLightbox(index) {
+    showPhoto(index);
     lightbox.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
@@ -155,14 +166,22 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.style.overflow = '';
   }
 
+  prevBtn.addEventListener('click', e => { e.stopPropagation(); showPhoto(currentIndex - 1); });
+  nextBtn.addEventListener('click', e => { e.stopPropagation(); showPhoto(currentIndex + 1); });
   document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
   lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+  document.addEventListener('keydown', e => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft')  showPhoto(currentIndex - 1);
+    if (e.key === 'ArrowRight') showPhoto(currentIndex + 1);
+  });
 
-  // Attach to photos after they're appended (delegated on container)
+  // Attach to photos (delegated on container)
   document.getElementById('route-photos').addEventListener('click', e => {
     if (e.target.classList.contains('route-photo')) {
-      openLightbox(e.target.src, e.target.alt);
+      const imgs = [...document.querySelectorAll('.route-photo')];
+      openLightbox(imgs.indexOf(e.target));
     }
   });
 
