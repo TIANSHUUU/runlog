@@ -496,7 +496,7 @@ const ROUTES = [
   },
   {
     id: "st-kilda-brighton-beach",
-    name: "St Kilda to Brighton Beach",
+    name: "St Kilda Coastal Run",
     location: "Melbourne, Australia",
     country_iso: 36,
     lat: -37.895919,
@@ -507,8 +507,8 @@ const ROUTES = [
     elevation: "71 m",
     date: "Apr 2026",
     thumbnail: "images/st-kilda-brighton-beach/thumb.jpg",
-    description_en: "A flat out-and-back along Port Phillip Bay, from St Kilda south to the Brighton Bathing Boxes. The path hugs the waterfront the whole way — marinas, open lawns, and long stretches of unbroken shoreline. Turn around whenever you like; the distance takes care of itself.",
-    description_zh: "沿菲利普港湾从 St Kilda 向南延伸至 Brighton 彩色小屋的往返路线，全程紧贴海岸。游艇码头、开阔草坪与连绵沙滩交替出现，随时可以折返，距离完全由自己掌控。",
+    description_en: "A flat out-and-back along Port Phillip Bay, from St Kilda south to the Brighton Bathing Boxes. The path hugs the waterfront the whole way — marinas, open lawns, and long stretches of unbroken shoreline. Turn around at Brighton or keep going another 6 km to Red Bluff Lookout; the coastline keeps delivering either way.",
+    description_zh: "沿菲利普港湾从 St Kilda 向南延伸至 Brighton 彩色小屋的往返路线，全程紧贴海岸。游艇码头、开阔草坪与连绵沙滩交替出现。可以在 Brighton 折返，也可以继续南下约6公里跑到 Red Bluff Lookout，沿途风景不断。",
     vibe_en: "Flat and sun-soaked. On a calm day the sea breeze barely registers — just warm light, the bay on one side, and the Melbourne skyline slowly receding behind you.",
     vibe_zh: "平坦、阳光充沛。风小的日子里海风几乎感觉不到——只有暖光、一侧的海湾，和身后渐渐远去的城市天际线。",
     highlights: [
@@ -538,7 +538,8 @@ const ROUTES = [
       "images/st-kilda-brighton-beach/01.jpg",
       "images/st-kilda-brighton-beach/02.jpg",
       "images/st-kilda-brighton-beach/03.jpg",
-      "images/st-kilda-brighton-beach/04.jpg"
+      "images/st-kilda-brighton-beach/04.jpg",
+      "images/st-kilda-brighton-beach/05.jpg"
     ],
     nearby: [
       {
