@@ -507,20 +507,20 @@ const ROUTES = [
     elevation: "71 m",
     date: "Apr 2026",
     thumbnail: "images/st-kilda-brighton-beach/thumb.jpg",
-    description_en: "A flat out-and-back along Port Phillip Bay, from St Kilda south to the Brighton Bathing Boxes. The path hugs the waterfront the whole way — marinas, open lawns, and long stretches of unbroken shoreline. Turn around at Brighton or keep going another 6 km to Red Bluff Lookout; the coastline keeps delivering either way.",
-    description_zh: "沿菲利普港湾从 St Kilda 向南延伸至 Brighton 彩色小屋的往返路线，全程紧贴海岸。游艇码头、开阔草坪与连绵沙滩交替出现。可以在 Brighton 折返，也可以继续南下约6公里跑到 Red Bluff Lookout，沿途风景不断。",
+    description_en: "A flat out-and-back along Port Phillip Bay, from St Kilda Beach south to the Brighton Bathing Boxes. The path hugs the waterfront the whole way — marinas, open lawns, and long stretches of unbroken shoreline. Turn around at Brighton or keep going another 6 km to Red Bluff Lookout; the coastline keeps delivering either way.",
+    description_zh: "沿菲利普港湾从 St Kilda 海滩向南延伸至 Brighton 彩色小屋的往返路线，全程紧贴海岸。游艇码头、开阔草坪与连绵沙滩交替出现。可以在 Brighton 折返，也可以继续南下约6公里跑到 Red Bluff Lookout，沿途风景不断。",
     vibe_en: "Flat and sun-soaked. On a calm day the sea breeze barely registers — just warm light, the bay on one side, and the Melbourne skyline slowly receding behind you.",
     vibe_zh: "平坦、阳光充沛。风小的日子里海风几乎感觉不到——只有暖光、一侧的海湾，和身后渐渐远去的城市天际线。",
     highlights: [
       {
         name: "Traffic-Free Waterfront",
         note_en: "The path stays separated from roads almost the entire way — one of the most runner-friendly stretches in inner Melbourne, with the scenery changing constantly between sandy beach, rocky foreshore and grassy parkland.",
-        note_zh: "跑道几乎全程与机动车隔绝，是墨尔本近郊最友好的跑步路段之一。沙滩、礁石海岸与草坪公园不断交替，风景始终在变。"
+        note_zh: "跑道几乎全程与机动车隔绝，是墨尔本市区附近最友好的跑步路段之一。沙滩、礁石海岸与草坪公园不断交替，风景始终在变。"
       },
       {
         name: "Point Ormond",
-        note_en: "A low grassy rise just above sea level — easy to miss, but the vantage point opens up a wide-angle view of the city skyline and the bay. One of the best sunset spots along the trail.",
-        note_zh: "一处略高于海平面的草坡，不起眼却视野极开阔，能同时望见城市天际线与海湾全景。日落时分尤其值得停留。"
+        note_en: "A grassy rise just above sea level — the vantage point opens up a wide-angle view of the city skyline and the bay. One of the best sunset spots along the trail.",
+        note_zh: "一处略高于海平面的草坡，视野极开阔，能同时望见城市天际线与海湾全景。日落时分尤其值得停留。"
       },
       {
         name: "Facilities Along the Way",
