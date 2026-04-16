@@ -113,3 +113,4 @@ images/
 | black-rock-bay-trail | Black Rock Bay Trail | 10.9 km | Easy | Melbourne, Bayside |
 | gardiners-creek-trail | Gardiners Creek Trail | 5.0 km | Easy | Melbourne, Deakin area |
 | ruffey-lake-run | Ruffey Lake Run | 10.1 km | Moderate | Doncaster, Melbourne |
+| st-kilda-brighton-beach | St Kilda to Brighton Beach | 11.3 km | Easy | Melbourne, Bayside |
