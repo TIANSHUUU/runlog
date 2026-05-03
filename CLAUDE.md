@@ -109,10 +109,11 @@ images/
 - **Photo grid**: CSS `:has()` adaptive layout (1/2/3/4/5 photos)
 - **Fonts**: Pacifico (logo only) + system font stack
 
-## Current routes (as of Apr 2026)
+## Current routes (as of May 2026)
 | id | Name | Distance | Difficulty | Location |
 |----|------|----------|------------|----------|
 | black-rock-bay-trail | Black Rock Bay Trail | 10.9 km | Easy | Melbourne, Bayside |
 | gardiners-creek-trail | Gardiners Creek Trail | 5.0 km | Easy | Melbourne, Deakin area |
 | ruffey-lake-run | Ruffey Lake Run | 10.1 km | Moderate | Doncaster, Melbourne |
 | st-kilda-brighton-beach | St Kilda Coastal Run | 11.3 km | Easy | Melbourne, Bayside |
+| royal-park | Royal Park Run | 10.2 km | Easy | Parkville, Melbourne |
