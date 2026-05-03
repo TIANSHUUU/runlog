@@ -693,8 +693,8 @@ const ROUTES = [
     elevation: "75 m",
     date: "Apr 2026",
     thumbnail: "images/royal-park/thumb.jpg",
-    description_en: "Royal Park spans 170 hectares between Parkville and North Melbourne, where the manicured formality of most city parks gives way to open grassland and native eucalyptus. The main circuit is almost entirely flat — rare this close to the CBD — and long enough to settle into a rhythm before you've gone around twice.",
-    description_zh: "皇家公园横跨 Parkville 与北墨尔本之间，170 公顷的开阔草地与本土桉树，少了城市公园惯有的精雕细琢，多了一分旷野感。主环线几乎全程平坦——这在墨尔本市区属难得——跑两圈也不会觉得单调。",
+    description_en: "Royal Park spans 170 hectares between Parkville and North Melbourne, where the manicured formality of most city parks gives way to open grassland and native eucalyptus.",
+    description_zh: "皇家公园横跨 Parkville 与北墨尔本之间，170 公顷的开阔草地与本土桉树，少了城市公园惯有的精雕细琢，多了一分旷野感。",
     vibe_en: "Fast ground, no hills, wind in your face. Somewhere to open your stride and let your mind go quiet. Suitable for both easy runs or more intense interval trainings.",
     vibe_zh: "几乎都是平地的环形公园路线，被树林与草地环绕。既适合轻松匀速跑，也可以进行间歇冲刺练习。",
     highlights: [
