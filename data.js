@@ -695,8 +695,8 @@ const ROUTES = [
     thumbnail: "images/royal-park/thumb.jpg",
     description_en: "Royal Park spans 170 hectares between Parkville and North Melbourne, where the manicured formality of most city parks gives way to open grassland and native eucalyptus. The main circuit is almost entirely flat — rare this close to the CBD — and long enough to settle into a rhythm before you've gone around twice.",
     description_zh: "皇家公园横跨 Parkville 与北墨尔本之间，170 公顷的开阔草地与本土桉树，少了城市公园惯有的精雕细琢，多了一分旷野感。主环线几乎全程平坦——这在墨尔本市区属难得——跑两圈也不会觉得单调。",
-    vibe_en: "Fast ground, no hills, wind in your face. Somewhere to open your stride and let your mind go quiet.",
-    vibe_zh: "平坦开阔、无遮无挡。步伐在这里可以完全放开，脑子也可以完全放空。",
+    vibe_en: "Fast ground, no hills, wind in your face. Somewhere to open your stride and let your mind go quiet. Suitable for both easy runs or more intense interval trainings.",
+    vibe_zh: "几乎都是平地的环形公园路线，被树林与草地环绕。既适合轻松匀速跑，也可以进行间歇冲刺练习。",
     highlights: [
       {
         name: "Native Parklands",
@@ -728,7 +728,7 @@ const ROUTES = [
       {
         name: "Potter Museum of Art",
         note_en: "The University of Melbourne's public art museum, free entry. A compact collection of Australian and international works — a quiet counterpoint to the open air outside.",
-        note_zh: "墨尔本大学附属美术馆，免费对外开放，馆藏澳洲及国际艺术作品。跑完进来静一静，正合适。",
+        note_zh: "墨尔本大学附属美术馆，免费对外开放，馆藏澳洲及国际艺术作品。馆内有储物柜、洗手间和饮水设施。",
         maps_url: "https://www.google.com/maps/place/Potter+Museum+of+Art/@-37.7974571,144.9615718,17z/data=!3m1!4b1!4m6!3m5!1s0x6ad65d2dbe63d283:0xaaaab3f60cc3be17!8m2!3d-37.7974571!4d144.9641467!16s%2Fm%2F0glrv2n?entry=ttu&g_ep=EgoyMDI2MDQyOS4wIKXMDSoASAFQAw%3D%3D"
       }
     ],
