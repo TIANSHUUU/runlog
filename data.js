@@ -693,6 +693,7 @@ const ROUTES = [
     elevation: "75 m",
     date: "Apr 2026",
     thumbnail: "images/royal-park/thumb.jpg",
+    thumbnail_position: "center 80%",
     description_en: "Royal Park spans 170 hectares between Parkville and North Melbourne, where the manicured formality of most city parks gives way to open grassland and native eucalyptus.",
     description_zh: "皇家公园横跨 Parkville 与北墨尔本之间，170 公顷的开阔草地与本土桉树，少了城市公园惯有的精雕细琢，多了一分旷野感。",
     vibe_en: "Fast ground, no hills, wind in your face. Somewhere to open your stride and let your mind go quiet. Suitable for both easy runs or more intense interval trainings.",
@@ -723,7 +724,7 @@ const ROUTES = [
         name: "University of Melbourne",
         note_en: "Melbourne's historic Parkville campus borders Royal Park to the south. The old quadrangle and sandstone buildings are worth a slow walk after your run.",
         note_zh: "墨尔本大学 Parkville 老校区紧邻公园南侧，历史四方庭院与砂岩建筑值得跑后慢慢逛。",
-        maps_url: "https://www.google.com/maps/place/University+of+Melbourne/@-37.7963444,144.9562891,15z"
+        maps_url: "https://www.google.com/maps/place/The+University+of+Melbourne/@-37.7983416,144.9583991,17z/data=!3m1!4b1!4m6!3m5!1s0x6ad642d45c07254b:0xeacb63e2b725ff6d!8m2!3d-37.7983459!4d144.960974!16zL20vMDFfcWdw?entry=ttu&g_ep=EgoyMDI2MDQyOS4wIKXMDSoASAFQAw%3D%3D"
       },
       {
         name: "Potter Museum of Art",

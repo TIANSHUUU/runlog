@@ -82,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function showCard(route) {
     clearTimeout(hideTimer);
     thumb.src        = route.thumbnail;
+    thumb.style.objectPosition = route.thumbnail_position || 'center';
     cname.textContent = route.name;
     loc.textContent  = route.location;
     dist.textContent = route.distance;
@@ -132,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
     a.href      = `route.html?id=${route.id}`;
     a.className = 'route-card';
     a.innerHTML = `
-      <img class="route-card-img" src="${route.thumbnail}" alt="${route.name}" loading="lazy">
+      <img class="route-card-img" src="${route.thumbnail}" alt="${route.name}" loading="lazy" style="object-position:${route.thumbnail_position || 'center'}">
       <div class="route-card-body">
         <div class="route-card-name">${route.name}</div>
         <div class="route-card-location">${route.location}</div>
