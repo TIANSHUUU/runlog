@@ -386,9 +386,7 @@ body {
 
 /* ─── Carousel section ───────────────────────────────── */
 .carousel-section {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px 16px 60px;
+  padding: 20px 24px 60px;
 }
 
 .carousel-header {
