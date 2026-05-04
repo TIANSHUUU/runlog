@@ -41,7 +41,7 @@ body {
 
 /* ─── Overview map ───────────────────────────────────── */
 #map {
-  width: 100vw; height: 28vh; min-height: 180px;
+  width: 100vw; height: 44vh; min-height: 260px;
   background: #1a2030;
   margin-top: var(--hh);
   cursor: default;
@@ -388,7 +388,7 @@ body {
 .carousel-section {
   max-width: 900px;
   margin: 0 auto;
-  padding: 28px 24px 80px;
+  padding: 20px 16px 60px;
 }
 
 .carousel-header {
@@ -456,7 +456,7 @@ body {
 }
 
 .carousel-track .route-card {
-  flex: 0 0 calc((100% - 32px) / 3); /* 3 visible, 2 gaps of 16px */
+  flex: 0 0 calc((100% - 64px) / 5); /* 5 visible, 4 gaps of 16px */
   min-width: 0;
 }
 
@@ -528,7 +528,7 @@ body {
 /* ─── Mobile ──────────────────────────────────────────── */
 @media (max-width: 600px) {
   .header, .route-header { padding: 0 16px; }
-  #map { height: 22vh; }
+  #map { height: 36vh; }
   .carousel-section { padding: 20px 16px 60px; }
   .carousel-track .route-card { flex: 0 0 100%; }
   .route-content { padding: 0 16px 60px; }

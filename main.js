@@ -154,13 +154,13 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentSlide = 0;
 
   function getVisibleCount() {
-    return window.innerWidth <= 600 ? 1 : 3;
+    return window.innerWidth <= 600 ? 1 : 5;
   }
 
   function buildDots() {
     const max = ROUTES.length - getVisibleCount();
     dotsEl.innerHTML = '';
-    for (let i = 0; i <= max; i++) {
+    for (let i = 0; i <= Math.max(0, max); i++) {
       const d = document.createElement('div');
       d.className = 'progress-dot' + (i === currentSlide ? ' active' : '');
       dotsEl.appendChild(d);
@@ -169,12 +169,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function slideTo(index) {
     const max = ROUTES.length - getVisibleCount();
-    currentSlide = Math.max(0, Math.min(max, index));
+    if (max <= 0) return;
+    currentSlide = ((index % (max + 1)) + (max + 1)) % (max + 1);
     const cardEl  = track.children[0];
     const cardW   = cardEl.offsetWidth + 16; // card width + gap
     track.style.transform = `translateX(-${currentSlide * cardW}px)`;
-    prevBtn.disabled = currentSlide === 0;
-    nextBtn.disabled = currentSlide >= max;
     dotsEl.querySelectorAll('.progress-dot').forEach((d, i) => {
       d.classList.toggle('active', i === currentSlide);
     });
