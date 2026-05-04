@@ -42,7 +42,7 @@ body {
 /* ─── Overview map ───────────────────────────────────── */
 #map {
   width: 100vw; height: 44vh; min-height: 260px;
-  background: #1a2030;
+  background: #e8e0d0;
   margin-top: var(--hh);
   cursor: default;
 }
@@ -380,7 +380,7 @@ body {
   text-transform: uppercase;
   white-space: nowrap;
   pointer-events: none;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  text-shadow: 0 1px 3px rgba(255,255,255,0.9);
   font-family: var(--font);
 }
 
