@@ -436,8 +436,7 @@ body {
   box-shadow: 0 4px 16px rgba(232,93,63,0.35);
   transform: scale(1.08);
 }
-.arrow-btn:disabled,
-.arrow-btn[disabled] {
+.arrow-btn:disabled {
   opacity: 0.25;
   pointer-events: none;
   box-shadow: none;
@@ -449,6 +448,7 @@ body {
 }
 
 .carousel-track {
+  width: 100%;
   display: flex;
   gap: 16px;
   transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
