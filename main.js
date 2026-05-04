@@ -126,8 +126,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── Route count ───────────────────────────────────────
   document.getElementById('route-count').textContent = `${ROUTES.length} routes`;
 
-  // ── Route card list ───────────────────────────────────
-  const grid = document.getElementById('route-grid');
+  // ── Route carousel ────────────────────────────────────
+  const track   = document.getElementById('carousel-track');
+  const prevBtn = document.getElementById('carousel-prev');
+  const nextBtn = document.getElementById('carousel-next');
+  const dotsEl  = document.getElementById('progress-dots');
+
+  // Build cards
   ROUTES.forEach(route => {
     const a = document.createElement('a');
     a.href      = `route.html?id=${route.id}`;
@@ -142,7 +147,53 @@ document.addEventListener('DOMContentLoaded', () => {
           <span class="badge" data-difficulty="${route.difficulty}">${route.difficulty}</span>
         </div>
       </div>`;
-    grid.appendChild(a);
+    track.appendChild(a);
   });
+
+  // Carousel logic
+  let currentSlide = 0;
+
+  function getVisibleCount() {
+    return window.innerWidth <= 600 ? 1 : 3;
+  }
+
+  function buildDots() {
+    const max = ROUTES.length - getVisibleCount();
+    dotsEl.innerHTML = '';
+    for (let i = 0; i <= max; i++) {
+      const d = document.createElement('div');
+      d.className = 'progress-dot' + (i === currentSlide ? ' active' : '');
+      dotsEl.appendChild(d);
+    }
+  }
+
+  function slideTo(index) {
+    const max = ROUTES.length - getVisibleCount();
+    currentSlide = Math.max(0, Math.min(max, index));
+    const cardEl  = track.children[0];
+    const cardW   = cardEl.offsetWidth + 16; // card width + gap
+    track.style.transform = `translateX(-${currentSlide * cardW}px)`;
+    prevBtn.disabled = currentSlide === 0;
+    nextBtn.disabled = currentSlide >= max;
+    dotsEl.querySelectorAll('.progress-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === currentSlide);
+    });
+  }
+
+  prevBtn.addEventListener('click', () => slideTo(currentSlide - 1));
+  nextBtn.addEventListener('click', () => slideTo(currentSlide + 1));
+
+  // Rebuild dots and reset on resize (debounced)
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      buildDots();
+      slideTo(0);
+    }, 150);
+  });
+
+  buildDots();
+  slideTo(0);
 
 });
