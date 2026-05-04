@@ -33,10 +33,20 @@
     </div>
   </div>
 
-  <!-- Route card list -->
-  <main class="route-list-section">
-    <div class="route-grid" id="route-grid"></div>
-  </main>
+  <!-- Route carousel -->
+  <section class="carousel-section">
+    <div class="carousel-header">
+      <span class="carousel-label">Routes</span>
+      <div class="carousel-arrows">
+        <button class="arrow-btn" id="carousel-prev" disabled aria-label="Previous">←</button>
+        <button class="arrow-btn" id="carousel-next" aria-label="Next">→</button>
+      </div>
+    </div>
+    <div class="carousel-wrap">
+      <div class="carousel-track" id="carousel-track"></div>
+    </div>
+    <div class="progress-dots" id="progress-dots"></div>
+  </section>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
