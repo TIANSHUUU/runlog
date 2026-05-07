@@ -114,7 +114,7 @@
   const screenCX   = window.innerWidth / 2;
   const leftBound  = screenCX - A * (Math.SQRT2 / 2);
   const rightBound = screenCX + A * (Math.SQRT2 / 2);
-  let runX = leftBound, runDir = 1;
+  let runX = rightBound, runDir = -1;
 
   function updateRunner() {
     runX += 1.4 * runDir;
@@ -126,7 +126,7 @@
     const surfY = B * Math.sqrt(1 - (relX / A) ** 2);
     el.style.left      = (runX - 44) + 'px';
     el.style.bottom    = (surfY + 2) + 'px';
-    el.style.transform = `scaleX(${runDir})`;
+    el.style.transform = `scaleX(${-runDir})`;
   }
 
   // ── Animation sequence ────────────────────────────────────
