@@ -132,8 +132,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const nextBtn = document.getElementById('carousel-next');
   const dotsEl  = document.getElementById('progress-dots');
 
-  // Build cards
-  ROUTES.forEach(route => {
+  // Build cards — newest first
+  [...ROUTES].reverse().forEach(route => {
     const a = document.createElement('a');
     a.href      = `route.html?id=${route.id}`;
     a.className = 'route-card';
