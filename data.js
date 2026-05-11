@@ -877,16 +877,18 @@ const ROUTES = [
     vibe_zh: "轻松平坦，湖面随光线变幻。可以选择紧靠湖边的水泥道，也可以走稍高处更安静的沙土路。日落时分尤为值得，其他任何时候来跑也同样惬意。",
     highlights: [
       {
-        name: "City in the Lake",
-        note_en: "From the southern shore, the Melbourne skyline rises across the water. At dusk the towers catch the last light and hold their reflection perfectly still — one of the city's most photographed vantage points.",
-        note_zh: "跑至湖的南侧，墨尔本 CBD 横亘于对岸。日暮时分，高楼被镀上金边，倒影在湖面纹丝不乱，是全城最经典的城市景观摄影位之一。"
+        name: "Golden Hour",
+        note_en: "From the southern or southeastern shore, look back toward the Melbourne CBD. At sunset, the towers catch the light and cast a perfect reflection across the still lake — one of the city's most iconic spots for urban photography.",
+        note_zh: "绕湖跑到南侧或东南侧时，回头望向墨尔本 CBD。日落时分，城市的高楼大厦会反射出金色的光芒，并在湖面上投下完美的倒影，这是墨尔本最经典的城市景观摄影位之一。"
       },
       {
-        name: "A Living Circuit",
-        note_en: "The paths are wide enough for everyone — runners, cyclists, strolling couples, dogs on leads. Out on the water, black swans and coots glide through the gaps between them.",
-        note_zh: "路面宽阔，跑者、骑手、散步的行人各行其道，湖中黑天鹅与黑水鸡悠然穿行，构成一幅灵动的水边图景。"
+        name: "Dynamic Landscape",
+        note_en: "Wide paths shared by runners, pedestrians, pets and cyclists, while black swans and coots glide across the water beside them — a living, ever-shifting scene.",
+        note_zh: "路面宽阔，跑者、行人、宠物和湖中的黑天鹅、黑水鸡构成灵动的风景。"
       }
     ],
+    start: [-37.851294, 144.977573],
+    end:   [-37.854202, 144.976630],
     photos: [
       "images/albert-park/thumb.jpg",
       "images/albert-park/01.jpg",
