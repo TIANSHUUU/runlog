@@ -117,3 +117,4 @@ images/
 | ruffey-lake-run | Ruffey Lake Run | 10.1 km | Moderate | Doncaster, Melbourne |
 | st-kilda-brighton-beach | St Kilda Coastal Run | 11.3 km | Easy | Melbourne, Bayside |
 | royal-park | Royal Park Run | 10.2 km | Easy | Parkville, Melbourne |
+| albert-park | Albert Park Lake Run | 10.0 km | Easy | Albert Park, Melbourne |
