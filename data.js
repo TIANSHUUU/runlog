@@ -898,13 +898,19 @@ const ROUTES = [
         name: "Albert Park F1 Circuit",
         note_en: "The roads encircling the lake form Melbourne's Formula 1 street circuit, host to the Australian Grand Prix each March. Between races the barriers and grandstands disappear — leaving nothing but the same asphalt you just ran on.",
         note_zh: "环湖公路即为 F1 澳大利亚大奖赛赛道，每年三月上演速度与激情。赛事结束后，围栏与看台悉数撤去，留下的，正是你刚刚跑过的那段沥青路。",
-        maps_url: ""
+        maps_url: "https://www.google.com/maps/place/Albert+Park+Grand+Prix+Circuit/@-37.8503402,144.967431,17z/data=!4m6!3m5!1s0x6ad6680c4961a545:0xcfde1155b81a8e8!8m2!3d-37.8503402!4d144.9700059!16zL20vMDJ5bmg?entry=ttu&g_ep=EgoyMDI2MDUwNi4wIKXMDSoASAFQAw%3D%3D"
       },
       {
-        name: "St Kilda Pier & Beach",
-        note_en: "A 10-minute walk south, St Kilda's pier stretches out over Port Phillip Bay. Come at dusk for the city skyline view, or on a quiet morning to spot the little penguin colony that nests at the breakwater.",
-        note_zh: "向南步行约10分钟即达圣基尔达。栈桥伸入菲利普港湾，傍晚可见城市天际线的剪影，清晨则有机会在防波堤附近遇见栖居于此的小蓝企鹅群。",
-        maps_url: ""
+        name: "MSAC",
+        note_en: "Right on the lake's edge, the Melbourne Sports and Aquatic Centre is the southern hemisphere's largest aquatic facility. Fifty-metre pool, spa, gym — a natural stop for a swim after your run.",
+        note_zh: "紧邻湖边，墨尔本水上运动中心是南半球最大的水上运动设施，设有50米标准泳池、水疗和健身房，跑完步顺道游一圈是再好不过的选择。",
+        maps_url: "https://www.google.com/maps/place/State+Sport+Centres+-+MSAC/@-37.8434377,144.9592874,17z/data=!3m1!4b1!4m6!3m5!1s0x6ad667e27fe5b65b:0x7da260ae352a6392!8m2!3d-37.843442!4d144.9618623!16zL20vMGMzX3pm?entry=ttu&g_ep=EgoyMDI2MDUwNi4wIKXMDSoASAFQAw%3D%3D"
+      },
+      {
+        name: "Middle Park Beach",
+        note_en: "A short run south from the lake, Middle Park faces Port Phillip Bay — quieter and less crowded than St Kilda, with calm water and a generous stretch of sand.",
+        note_zh: "从湖边向南跑片刻即达，面朝菲利普港湾。比圣基尔达更安静，水面平缓，沙滩宽阔，适合跑后漫步或下水降温。",
+        maps_url: "https://www.google.com/maps/search/Middle+Park+Beach/@-37.8434377,144.9592874,17z?entry=ttu&g_ep=EgoyMDI2MDUwNi4wIKXMDSoASAFQAw%3D%3D"
       }
     ],
     coordinates: [
