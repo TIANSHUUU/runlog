@@ -37,14 +37,7 @@ const ROUTES = [
       "images/black-rock-bay-trail/02.jpg",
       "images/black-rock-bay-trail/04.jpg"
     ],
-    nearby: [
-      {
-        name: "Nay Nays Wine Bar",
-        note_en: "Cosy neighbourhood bar pouring indie Australian wines.",
-        note_zh: "温馨的街区酒吧，主打澳大利亚独立酒庄自然葡萄酒。",
-        maps_url: "https://www.google.com/maps/place/Nay+Nays+Wine+Bar/@-37.9856193,145.0322895,17z/data=!3m1!4b1!4m6!3m5!1s0x6ad66f91446955dd:0x61782e9aedd57b58!8m2!3d-37.9856236!4d145.0348644!16s%2Fg%2F11ynxrxmnl"
-      }
-    ],
+    nearby: [],
     country_iso: 36,
     start: [-37.992286, 145.029714],
     end:   [-37.991697, 145.029967],
