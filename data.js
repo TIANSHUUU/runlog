@@ -878,12 +878,12 @@ const ROUTES = [
     highlights: [
       {
         name: "Golden Hour",
-        note_en: "From the southern or southeastern shore, look back toward the Melbourne CBD. At sunset, the towers catch the light and cast a perfect reflection across the still lake — one of the city's most iconic spots for urban photography.",
-        note_zh: "绕湖跑到南侧或东南侧时，回头望向墨尔本 CBD。日落时分，城市的高楼大厦会反射出金色的光芒，并在湖面上投下完美的倒影，这是墨尔本最经典的城市景观摄影位之一。"
+        note_en: "From the southern shore, look back toward the Melbourne CBD. At sunset, the towers catch the light and cast a perfect reflection across the still lake — one of the city's most iconic spots for urban photography.",
+        note_zh: "跑到湖的南侧时，回头望向墨尔本 CBD。日落时分，城市的高楼大厦会反射出金色的光芒，并在湖面上投下完美的倒影，这是墨尔本最经典的城市景观摄影位之一。"
       },
       {
         name: "Dynamic Landscape",
-        note_en: "Wide paths shared by runners, pedestrians, pets and cyclists, while black swans and coots glide across the water beside them — a living, ever-shifting scene.",
+        note_en: "Wide paths shared by runners, pedestrians and pets, while black swans and coots glide across the water beside them — a living, ever-shifting scene.",
         note_zh: "路面宽阔，跑者、行人、宠物和湖中的黑天鹅、黑水鸡构成灵动的风景。"
       }
     ],
@@ -905,13 +905,13 @@ const ROUTES = [
       {
         name: "MSAC",
         note_en: "Right on the lake's edge, the Melbourne Sports and Aquatic Centre is the southern hemisphere's largest aquatic facility. Fifty-metre pool, spa, gym — a natural stop for a swim after your run.",
-        note_zh: "紧邻湖边，墨尔本水上运动中心是南半球最大的水上运动设施，设有50米标准泳池、水疗和健身房，跑完步顺道游一圈是再好不过的选择。",
+        note_zh: "紧邻湖边，墨尔本水上运动中心是南半球最大的水上运动设施，设有50米标准泳池、水疗和健身房。",
         maps_url: "https://www.google.com/maps/place/State+Sport+Centres+-+MSAC/@-37.8434377,144.9592874,17z/data=!3m1!4b1!4m6!3m5!1s0x6ad667e27fe5b65b:0x7da260ae352a6392!8m2!3d-37.843442!4d144.9618623!16zL20vMGMzX3pm?entry=ttu&g_ep=EgoyMDI2MDUwNi4wIKXMDSoASAFQAw%3D%3D"
       },
       {
         name: "Middle Park Beach",
         note_en: "A short run south from the lake, Middle Park faces Port Phillip Bay — quieter and less crowded than St Kilda, with calm water and a generous stretch of sand.",
-        note_zh: "从湖边向南跑片刻即达，面朝菲利普港湾。比圣基尔达更安静，水面平缓，沙滩宽阔，适合跑后漫步或下水降温。",
+        note_zh: "从湖边向南跑片刻即达，面朝菲利普港湾。比圣基尔达更安静，水面平缓，沙滩宽阔。",
         maps_url: "https://www.google.com/maps/search/Middle+Park+Beach/@-37.8434377,144.9592874,17z?entry=ttu&g_ep=EgoyMDI2MDUwNi4wIKXMDSoASAFQAw%3D%3D"
       }
     ],
