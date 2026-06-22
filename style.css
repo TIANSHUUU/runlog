@@ -22,6 +22,11 @@
           "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Roboto Mono",
                "PingFang SC", monospace;
+  /* Oswald = condensed display for big headlines + section labels */
+  --font-display: 'Oswald', "PingFang SC", sans-serif;
+  /* Source Serif 4 for English reading prose; CJK falls back to system sans */
+  --font-body: 'Source Serif 4', Georgia, "PingFang SC",
+               "Hiragino Sans GB", "Microsoft YaHei", serif;
 }
 
 html, body { height: 100%; }
@@ -60,9 +65,10 @@ body {
   color: var(--accent);
 }
 .hero-title {
-  font-family: var(--font-mono);
-  font-size: clamp(44px, 8vw, 84px); line-height: 0.84;
-  letter-spacing: -0.04em; font-weight: 800; color: var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(54px, 9.5vw, 104px); line-height: 0.9;
+  letter-spacing: 0.005em; font-weight: 700; text-transform: uppercase;
+  color: var(--ink);
   margin-top: 14px;
 }
 .hero-o { color: var(--accent); }
@@ -185,10 +191,10 @@ body {
   color: var(--rh-loc); margin-top: 16px;
 }
 .route-hero-title {
-  font-family: var(--font-mono);
-  font-size: clamp(34px, 6vw, 60px); line-height: 0.88;
-  letter-spacing: -0.035em; font-weight: 800;
-  margin-top: 8px;
+  font-family: var(--font-display);
+  font-size: clamp(40px, 7vw, 68px); line-height: 0.94;
+  letter-spacing: 0.006em; font-weight: 600; text-transform: uppercase;
+  margin-top: 10px;
 }
 .route-hero-points {
   display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
@@ -289,6 +295,11 @@ body {
 /* ─── Route content ──────────────────────────────────── */
 .route-content { max-width: 700px; margin: 0 auto; padding: 0 24px 80px; }
 
+/* English reading prose uses the serif; nested CJK (.*-zh) falls back to
+   system sans automatically via the --font-body stack */
+.description, .vibe-tag, .highlight-name, .highlight-note,
+.nearby-name, .nearby-note { font-family: var(--font-body); }
+
 /* Description */
 .description {
   font-size: 19px; line-height: 1.8; color: #3A3A3C; margin-bottom: 14px;
@@ -332,8 +343,9 @@ body {
 
 /* Section title */
 .section-title {
-  font-size: 11px; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.9px;
+  font-family: var(--font-display);
+  font-size: 13px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
   color: #3B70D6; margin-bottom: 18px;
 }
 
