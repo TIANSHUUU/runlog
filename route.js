@@ -12,6 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
+  // ── Floating back button (fades in past the hero) ─────
+  const backFloat = document.getElementById('route-back-float');
+  const onScroll = () => backFloat.classList.toggle('visible', window.scrollY > 240);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
   // ── Populate text ─────────────────────────────────────
   document.title = `${route.name} · runlog`;
 
