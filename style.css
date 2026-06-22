@@ -611,6 +611,8 @@ body {
 /* ─── Mobile ──────────────────────────────────────────── */
 @media (max-width: 600px) {
   .header { padding: 0 16px; }
+  .logo { font-size: 17px; white-space: nowrap; }
+  .header-tagline { display: none; }   /* too tight beside logo; hero says "RUN THE WORLD" */
   .hero { padding: 26px 16px 20px; }
   .hero-tally { gap: 18px; }
   #map { height: 36vh; }
@@ -618,6 +620,18 @@ body {
   .carousel-track .route-card { flex: 0 0 100%; }
   .route-content { padding: 0 16px 60px; }
   .route-hero { padding: 22px 16px 0; }
+
+  /* Stats: 2×2 grid so long values (e.g. Surface) aren't squeezed into a 1/4 column */
+  .route-hero-stats {
+    display: grid; grid-template-columns: 1fr 1fr;
+    border-top: 1px solid var(--rh-line);
+  }
+  .route-hero-stat { border-right: none; padding: 14px 12px; }
+  .route-hero-stat:nth-child(odd) { border-right: 1px solid var(--rh-line); }
+  .route-hero-stat:nth-child(1),
+  .route-hero-stat:nth-child(2) { border-bottom: 1px solid var(--rh-line); }
+  .route-hero-stat-v { font-size: 19px; }
+
   .photos-grid { grid-template-columns: 1fr; }
   .photos-grid .route-photo:first-child:last-child { aspect-ratio: 4/3; }
 }
