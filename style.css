@@ -178,12 +178,14 @@ body {
   display: inline-block;
   font-family: var(--font-mono);
   font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--rh-back); text-decoration: none;
+  font-weight: 600;
+  color: var(--rh-loc); text-decoration: none;
 }
-.route-hero-back:hover { color: var(--accent); }
+.route-hero-back:hover { opacity: 0.7; }
 .route-hero-loc {
   font-family: var(--font-mono);
   font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+  font-weight: 700;
   color: var(--rh-loc); margin-top: 16px;
 }
 .route-hero-title {
