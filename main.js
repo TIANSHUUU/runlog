@@ -187,8 +187,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  prevBtn.addEventListener('click', () => slideTo(currentSlide - 1));
-  nextBtn.addEventListener('click', () => slideTo(currentSlide + 1));
+  prevBtn.addEventListener('click', () => { slideTo(currentSlide - 1); startAutoplay(); });
+  nextBtn.addEventListener('click', () => { slideTo(currentSlide + 1); startAutoplay(); });
+
+  // ── Autoplay (pauses on hover / when tab hidden; resets on manual nav) ─
+  const AUTOPLAY_MS = 4500;
+  let autoplayTimer = null;
+  function startAutoplay() {
+    stopAutoplay();
+    if (ROUTES.length - getVisibleCount() <= 0) return; // nothing to scroll
+    autoplayTimer = setInterval(() => slideTo(currentSlide + 1), AUTOPLAY_MS);
+  }
+  function stopAutoplay() {
+    if (autoplayTimer) { clearInterval(autoplayTimer); autoplayTimer = null; }
+  }
+
+  const carouselSection = document.querySelector('.carousel-section');
+  carouselSection.addEventListener('mouseenter', stopAutoplay);
+  carouselSection.addEventListener('mouseleave', startAutoplay);
+  document.addEventListener('visibilitychange', () => {
+    document.hidden ? stopAutoplay() : startAutoplay();
+  });
 
   // Rebuild dots and reset on resize (debounced)
   let resizeTimer;
@@ -197,10 +216,12 @@ document.addEventListener('DOMContentLoaded', () => {
     resizeTimer = setTimeout(() => {
       buildDots();
       slideTo(0);
+      startAutoplay();
     }, 150);
   });
 
   buildDots();
   slideTo(0);
+  startAutoplay();
 
 });
