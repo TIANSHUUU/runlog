@@ -1,6 +1,15 @@
 (function () {
   'use strict';
 
+  // ── Play splash only once per browser session ─────────────
+  // Returning from a route page (same tab session) skips the animation.
+  const splashEl = document.getElementById('splash');
+  if (sessionStorage.getItem('splashed')) {
+    if (splashEl) splashEl.remove();
+    return;
+  }
+  sessionStorage.setItem('splashed', '1');
+
   // ── Sizing ────────────────────────────────────────────────
   const VW = window.innerWidth;
   const A  = Math.round(VW * 0.30);   // horizontal semi-axis

@@ -12,10 +12,15 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
+  // ── Floating back button (fades in past the hero) ─────
+  const backFloat = document.getElementById('route-back-float');
+  const onScroll = () => backFloat.classList.toggle('visible', window.scrollY > 240);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
   // ── Populate text ─────────────────────────────────────
   document.title = `${route.name} · runlog`;
 
-  document.getElementById('header-route-name').textContent = route.name;
   document.getElementById('route-title').textContent       = route.name;
   document.getElementById('route-location').textContent    = route.location;
   document.getElementById('route-date').textContent        = route.date;

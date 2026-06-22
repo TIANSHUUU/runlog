@@ -123,8 +123,16 @@ document.addEventListener('DOMContentLoaded', () => {
   card.addEventListener('mouseleave', () => hideCard());
   card.addEventListener('click', () => { location.href = `route.html?id=${card.dataset.id}`; });
 
-  // ── Route count ───────────────────────────────────────
-  document.getElementById('route-count').textContent = `${ROUTES.length} routes`;
+  // ── Hero tally (derived from ROUTES) ──────────────────
+  const cityOf = loc => {
+    const p = loc.split(',').map(s => s.trim());
+    return p.length >= 2 ? p[p.length - 2] : p[0];
+  };
+  const pad = n => String(n).padStart(2, '0');
+  document.getElementById('tally-routes').textContent    = pad(ROUTES.length);
+  document.getElementById('tally-km').textContent        = ROUTES.reduce((s, r) => s + parseFloat(r.distance), 0).toFixed(1);
+  document.getElementById('tally-cities').textContent    = pad(new Set(ROUTES.map(r => cityOf(r.location))).size);
+  document.getElementById('tally-countries').textContent = pad(new Set(ROUTES.map(r => r.country_iso)).size);
 
   // ── Route carousel ────────────────────────────────────
   const track   = document.getElementById('carousel-track');
@@ -179,8 +187,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  prevBtn.addEventListener('click', () => slideTo(currentSlide - 1));
-  nextBtn.addEventListener('click', () => slideTo(currentSlide + 1));
+  prevBtn.addEventListener('click', () => { slideTo(currentSlide - 1); startAutoplay(); });
+  nextBtn.addEventListener('click', () => { slideTo(currentSlide + 1); startAutoplay(); });
+
+  // ── Autoplay (pauses on hover / when tab hidden; resets on manual nav) ─
+  const AUTOPLAY_MS = 4500;
+  let autoplayTimer = null;
+  function startAutoplay() {
+    stopAutoplay();
+    if (ROUTES.length - getVisibleCount() <= 0) return; // nothing to scroll
+    autoplayTimer = setInterval(() => slideTo(currentSlide + 1), AUTOPLAY_MS);
+  }
+  function stopAutoplay() {
+    if (autoplayTimer) { clearInterval(autoplayTimer); autoplayTimer = null; }
+  }
+
+  const carouselSection = document.querySelector('.carousel-section');
+  carouselSection.addEventListener('mouseenter', stopAutoplay);
+  carouselSection.addEventListener('mouseleave', startAutoplay);
+  document.addEventListener('visibilitychange', () => {
+    document.hidden ? stopAutoplay() : startAutoplay();
+  });
 
   // Rebuild dots and reset on resize (debounced)
   let resizeTimer;
@@ -189,10 +216,12 @@ document.addEventListener('DOMContentLoaded', () => {
     resizeTimer = setTimeout(() => {
       buildDots();
       slideTo(0);
+      startAutoplay();
     }, 150);
   });
 
   buildDots();
   slideTo(0);
+  startAutoplay();
 
 });

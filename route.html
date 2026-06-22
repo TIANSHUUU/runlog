@@ -5,58 +5,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>runlog</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Oswald:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="favicon.png">
 </head>
 <body>
 
-  <header class="route-header">
-    <a href="index.html" class="back-btn">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      Map
-    </a>
-    <span class="header-route-name" id="header-route-name"></span>
-  </header>
+  <a href="index.html" class="route-back-float" id="route-back-float">← All routes</a>
+
+  <section class="route-hero route-hero--dark">
+    <a href="index.html" class="route-hero-back">← All routes</a>
+    <div class="route-hero-loc" id="route-location"></div>
+    <h1 class="route-hero-title" id="route-title"></h1>
+    <div class="route-hero-points" id="route-points"></div>
+    <div class="route-hero-meta"><span id="route-date"></span></div>
+    <div class="route-hero-stats">
+      <div class="route-hero-stat">
+        <span class="route-hero-stat-v" id="stat-distance"></span>
+        <span class="route-hero-stat-l">Distance</span>
+      </div>
+      <div class="route-hero-stat">
+        <span class="route-hero-stat-v" id="stat-elevation"></span>
+        <span class="route-hero-stat-l">Elevation</span>
+      </div>
+      <div class="route-hero-stat">
+        <span class="route-hero-stat-v" id="stat-surface"></span>
+        <span class="route-hero-stat-l">Surface</span>
+      </div>
+      <div class="route-hero-stat">
+        <span class="route-hero-stat-v" id="stat-difficulty"></span>
+        <span class="route-hero-stat-l">Difficulty</span>
+      </div>
+    </div>
+  </section>
 
   <div id="route-map"></div>
 
   <div class="route-content">
-
-    <!-- Title + meta -->
-    <div class="route-meta">
-      <div class="route-title-row">
-        <h1 id="route-title"></h1>
-        <div class="route-points" id="route-points"></div>
-      </div>
-      <div class="route-meta-sub">
-        <span id="route-location"></span>
-        <span id="route-date"></span>
-      </div>
-    </div>
-
-    <!-- Stats -->
-    <div class="stats-bar">
-      <div class="stat">
-        <span class="stat-label">Distance</span>
-        <span class="stat-value" id="stat-distance"></span>
-      </div>
-      <div class="stat">
-        <span class="stat-label">Elevation</span>
-        <span class="stat-value" id="stat-elevation"></span>
-      </div>
-      <div class="stat">
-        <span class="stat-label">Surface</span>
-        <span class="stat-value" id="stat-surface"></span>
-      </div>
-      <div class="stat">
-        <span class="stat-label">Difficulty</span>
-        <span class="stat-value" id="stat-difficulty"></span>
-      </div>
-    </div>
 
     <!-- Speed legend (shown only if route has speed data) -->
     <div class="speed-legend hidden" id="speed-legend">
