@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── Populate text ─────────────────────────────────────
   document.title = `${route.name} · runlog`;
 
-  document.getElementById('header-route-name').textContent = route.name;
   document.getElementById('route-title').textContent       = route.name;
   document.getElementById('route-location').textContent    = route.location;
   document.getElementById('route-date').textContent        = route.date;

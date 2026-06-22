@@ -160,28 +160,70 @@ body {
 .badge[data-difficulty="Moderate"]   { background: #EBF2FF; color: #2B5FC4; }
 .badge[data-difficulty="Challenging"]{ background: var(--accent-bg); color: var(--accent); }
 
-/* ─── Route page header ──────────────────────────────── */
-.route-header {
-  position: sticky; top: 0; z-index: 100;
-  height: var(--hh);
-  display: flex; align-items: center; gap: 14px;
-  padding: 0 28px;
-  background: rgba(249,249,247,0.92);
-  backdrop-filter: blur(18px) saturate(180%);
-  -webkit-backdrop-filter: blur(18px) saturate(180%);
-  border-bottom: 1px solid var(--border);
+/* ─── Route detail poster header ─────────────────────── */
+.route-hero {
+  --rh-bg:   var(--bg);
+  --rh-fg:   var(--ink);
+  --rh-back: var(--muted);
+  --rh-loc:  var(--accent);
+  --rh-line: var(--line);
+  --rh-easy: #1A7F4B;
+  --rh-mod:  #2B5FC4;
+  --rh-chal: var(--accent);
+
+  background: var(--rh-bg); color: var(--rh-fg);
+  padding: 26px 28px 0;
 }
-.back-btn {
-  display: flex; align-items: center; gap: 5px;
-  font-size: 14px; color: var(--accent);
-  text-decoration: none; font-weight: 500;
-  white-space: nowrap; flex-shrink: 0;
+.route-hero-back {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--rh-back); text-decoration: none;
 }
-.back-btn svg { flex-shrink: 0; }
-.back-btn:hover { opacity: 0.7; }
-.header-route-name {
-  font-size: 15px; font-weight: 600;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+.route-hero-back:hover { color: var(--accent); }
+.route-hero-loc {
+  font-family: var(--font-mono);
+  font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--rh-loc); margin-top: 16px;
+}
+.route-hero-title {
+  font-family: var(--font-mono);
+  font-size: clamp(34px, 6vw, 60px); line-height: 0.88;
+  letter-spacing: -0.035em; font-weight: 800;
+  margin-top: 8px;
+}
+.route-hero-points {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  font-size: 13px; margin-top: 14px;
+}
+.route-hero-meta {
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--rh-back); margin-top: 10px;
+}
+.route-hero-stats {
+  display: flex; margin-top: 22px;
+  border-top: 1px solid var(--rh-line);
+}
+.route-hero-stat {
+  flex: 1; min-width: 0; padding: 16px 0;
+  border-right: 1px solid var(--rh-line);
+}
+.route-hero-stat:last-child { border-right: none; }
+.route-hero-stat-v {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: clamp(20px, 3vw, 30px); line-height: 0.9;
+  letter-spacing: -0.03em; font-weight: 800;
+}
+.route-hero-stat-v[data-difficulty="Easy"]        { color: var(--rh-easy); }
+.route-hero-stat-v[data-difficulty="Moderate"]    { color: var(--rh-mod); }
+.route-hero-stat-v[data-difficulty="Challenging"] { color: var(--rh-chal); }
+.route-hero-stat-l {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--rh-back); margin-top: 8px;
 }
 
 /* ─── Route map ──────────────────────────────────────── */
@@ -200,57 +242,15 @@ body {
 .map-pin--finish { background: #E85D3F; }
 
 /* ─── Route points (Start / Finish links) ────────────── */
-.route-title-row {
-  display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
+.route-hero-points .route-point-link {
+  color: var(--rh-fg);
+  text-decoration: underline; text-underline-offset: 2px;
 }
-.route-title-row h1 { margin: 0; }
-.route-points {
-  display: flex; align-items: center; gap: 10px;
-  font-size: 13px; white-space: nowrap;
-}
-.route-point-link {
-  color: var(--text);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-.route-point-link:hover { color: var(--accent); }
-.route-point-sep { color: var(--muted); }
+.route-hero-points .route-point-link:hover { color: var(--accent); }
+.route-hero-points .route-point-sep { color: var(--rh-back); }
 
 /* ─── Route content ──────────────────────────────────── */
 .route-content { max-width: 700px; margin: 0 auto; padding: 0 24px 80px; }
-
-.route-meta { padding: 28px 0 24px; }
-.route-meta h1 {
-  font-size: 26px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 6px;
-}
-.route-meta-sub {
-  display: flex; align-items: center; gap: 12px;
-  font-size: 13px; color: var(--muted);
-}
-.route-meta-sub span::before { content: '·'; margin-right: 12px; }
-.route-meta-sub span:first-child::before { content: ''; margin-right: 0; }
-
-/* Stats */
-.stats-bar {
-  display: flex; overflow-x: auto;
-  border: 1px solid var(--border); border-radius: var(--r);
-  margin-bottom: 32px;
-}
-.stats-bar::-webkit-scrollbar { height: 0; }
-.stat {
-  flex: 1; min-width: 90px;
-  padding: 18px 16px; text-align: center;
-  border-right: 1px solid var(--border);
-}
-.stat:last-child { border-right: none; }
-.stat-label {
-  display: block; font-size: 10px; color: var(--muted);
-  text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 7px;
-}
-.stat-value { font-size: 15px; font-weight: 650; }
-.stat-value[data-difficulty="Easy"]       { color: #1A7F4B; }
-.stat-value[data-difficulty="Moderate"]   { color: #2B5FC4; }
-.stat-value[data-difficulty="Challenging"]{ color: var(--accent); }
 
 /* Description */
 .description {
@@ -568,14 +568,14 @@ body {
 
 /* ─── Mobile ──────────────────────────────────────────── */
 @media (max-width: 600px) {
-  .header, .route-header { padding: 0 16px; }
+  .header { padding: 0 16px; }
   .hero { padding: 26px 16px 20px; }
   .hero-tally { gap: 18px; }
   #map { height: 36vh; }
   .carousel-section { padding: 20px 16px 60px; }
   .carousel-track .route-card { flex: 0 0 100%; }
   .route-content { padding: 0 16px 60px; }
-  .route-meta h1 { font-size: 22px; }
+  .route-hero { padding: 22px 16px 0; }
   .photos-grid { grid-template-columns: 1fr; }
   .photos-grid .route-photo:first-child:last-child { aspect-ratio: 4/3; }
 }
