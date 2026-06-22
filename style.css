@@ -229,6 +229,20 @@ body {
   color: var(--rh-back); margin-top: 8px;
 }
 
+/* ─── Dark poster header (scoped layer — delete this block and remove the
+       `route-hero--dark` class from route.html to revert to all-light) ─── */
+.route-hero--dark {
+  --rh-bg:   var(--ink);
+  --rh-fg:   #F4F2EC;
+  --rh-back: #A89F8E;
+  --rh-loc:  #FF7A5C;
+  --rh-line: #3A362C;
+  --rh-easy: #5BD18E;
+  --rh-mod:  #5B9BFF;
+  --rh-chal: #FF7A5C;
+  padding-bottom: 4px;
+}
+
 /* Floating back button — fades in after scrolling past the hero */
 .route-back-float {
   position: fixed; top: 16px; left: 16px; z-index: 1200;
