@@ -162,10 +162,11 @@ body {
 
 /* ─── Route detail poster header ─────────────────────── */
 .route-hero {
-  --rh-bg:   var(--bg);
-  --rh-fg:   var(--ink);
-  --rh-back: var(--muted);
-  --rh-loc:  var(--accent);
+  --rh-bg:    var(--bg);
+  --rh-fg:    var(--ink);
+  --rh-back:  var(--muted);
+  --rh-label: var(--muted);
+  --rh-loc:   var(--accent);
   --rh-line: var(--line);
   --rh-easy: #1A7F4B;
   --rh-mod:  #2B5FC4;
@@ -177,9 +178,9 @@ body {
 .route-hero-back {
   display: inline-block;
   font-family: var(--font-mono);
-  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase;
   font-weight: 600;
-  color: var(--rh-fg); opacity: 0.78; text-decoration: none;
+  color: var(--rh-fg); opacity: 0.82; text-decoration: none;
 }
 .route-hero-back:hover { opacity: 1; }
 .route-hero-loc {
@@ -225,18 +226,19 @@ body {
 .route-hero-stat-l {
   display: block;
   font-family: var(--font-mono);
-  font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--rh-back); margin-top: 8px;
+  font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--rh-label); margin-top: 8px;
 }
 
 /* ─── Dark poster header (scoped layer — delete this block and remove the
        `route-hero--dark` class from route.html to revert to all-light) ─── */
 .route-hero--dark {
-  --rh-bg:   var(--ink);
-  --rh-fg:   #F4F2EC;
-  --rh-back: #A89F8E;
-  --rh-loc:  #FF7A5C;
-  --rh-line: #3A362C;
+  --rh-bg:    var(--ink);
+  --rh-fg:    #F4F2EC;
+  --rh-back:  #BDB6A6;
+  --rh-label: #E4DFD2;
+  --rh-loc:   #FF7A5C;
+  --rh-line:  #3A362C;
   --rh-easy: #5BD18E;
   --rh-mod:  #5B9BFF;
   --rh-chal: #FF7A5C;
@@ -294,26 +296,26 @@ body {
 
 /* Description */
 .description {
-  font-size: 17.5px; line-height: 1.8; color: #3A3A3C; margin-bottom: 14px;
+  font-size: 19px; line-height: 1.8; color: #3A3A3C; margin-bottom: 14px;
 }
 .desc-zh {
   display: block; margin-top: 10px;
-  font-size: 16.5px; color: #4A4A4E; line-height: 1.78;
+  font-size: 18px; color: #4A4A4E; line-height: 1.8;
 }
 .vibe-tag {
-  font-size: 15.5px; line-height: 1.68;
+  font-size: 17px; line-height: 1.7;
   background: var(--accent-bg);
-  padding: 14px 18px; border-radius: 9px;
+  padding: 15px 18px; border-radius: 9px;
   margin-bottom: 36px; color: #3A3A3C;
 }
 .vibe-label { font-weight: 600; color: var(--accent); margin-right: 8px; }
 .vibe-zh {
   display: block; margin-top: 8px;
-  font-size: 14.5px; color: #4A4A4E; line-height: 1.72;
+  font-size: 16px; color: #4A4A4E; line-height: 1.74;
 }
 .note-zh {
   display: block; margin-top: 3px;
-  font-size: 14.5px; color: #4A4A4E; line-height: 1.62;
+  font-size: 16px; color: #4A4A4E; line-height: 1.64;
 }
 
 /* ─── Nearby places ───────────────────────────────────── */
@@ -328,9 +330,9 @@ body {
 .nearby-item:first-child { border-top: 1px solid var(--border); }
 .nearby-item:hover { opacity: 0.65; }
 .nearby-info { flex: 1; padding-right: 16px; }
-.nearby-name { font-size: 16.5px; font-weight: 600; margin-bottom: 3px; }
-.nearby-note { font-size: 14.5px; color: #3A3A3C; line-height: 1.58; }
-.nearby-note-zh { font-size: 13.5px; color: #4A4A4E; line-height: 1.58; margin-top: 2px; }
+.nearby-name { font-size: 18px; font-weight: 600; margin-bottom: 3px; }
+.nearby-note { font-size: 16px; color: #3A3A3C; line-height: 1.6; }
+.nearby-note-zh { font-size: 15px; color: #4A4A4E; line-height: 1.6; margin-top: 2px; }
 .nearby-arrow { color: var(--accent); flex-shrink: 0; }
 
 /* Section title */
@@ -350,8 +352,8 @@ body {
   display: flex; align-items: center; justify-content: center;
   margin-top: 1px; flex-shrink: 0;
 }
-.highlight-name { font-size: 16.5px; font-weight: 600; margin-bottom: 5px; }
-.highlight-note { font-size: 15.5px; color: #3A3A3C; line-height: 1.68; }
+.highlight-name { font-size: 18px; font-weight: 600; margin-bottom: 5px; }
+.highlight-note { font-size: 17px; color: #3A3A3C; line-height: 1.7; }
 
 /* Photos */
 .photos-section { margin-bottom: 40px; }
