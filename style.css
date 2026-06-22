@@ -45,11 +45,6 @@ body {
 }
 .logo { font-family: 'Pacifico', cursive; font-size: 18px; font-weight: 400; color: var(--accent); display: flex; align-items: center; gap: 8px; }
 .logo-icon { width: 32px; height: 32px; flex-shrink: 0; border-radius: 6px; }
-.header-tagline {
-  font-family: var(--font-mono);
-  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--muted);
-}
 
 /* ─── Hero ───────────────────────────────────────────── */
 .hero {
@@ -612,7 +607,6 @@ body {
 @media (max-width: 600px) {
   .header { padding: 0 16px; }
   .logo { font-size: 17px; white-space: nowrap; }
-  .header-tagline { display: none; }   /* too tight beside logo; hero says "RUN THE WORLD" */
   .hero { padding: 26px 16px 20px; }
   .hero-tally { gap: 18px; }
   #map { height: 36vh; }
