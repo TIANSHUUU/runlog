@@ -6,30 +6,43 @@ Pure static site: HTML + CSS + JS, no framework, no build step. Hosted on GitHub
 Local path: `/Users/tantianshu/Documents/code/running-routes/`
 
 ## Aesthetic direction
-- Clean and modern — think Monocle magazine or a well-designed travel guide
+- "Race Bib / Run the World" editorial sports-magazine look on a warm-paper base (`--bg #F4F2EC`, ink `#16140F`) — bold, athletic, high-impact, still clean
 - Typography-forward, generous whitespace
 - Accent color: `#E85D3F` (coral red). Used for interactive elements and branding only
 - Descriptive body text: dark gray (`#3A3A3C`). Light gray (`var(--muted)`, `#8E8E93`) is reserved for metadata only (date, location, distance) — never for descriptive sentences
 - Section titles (HIGHLIGHTS, PHOTOS, NEARBY): blue `#3B70D6` — this was intentionally kept after testing gray; do not change
 
+### Type system (three layers — keep them separate)
+- **Display headlines** (`--font-display` = Oswald, condensed, UPPERCASE): homepage `RUN THE WORLD` hero, route titles, section labels. The athletic punch.
+- **Reading prose** (`--font-body` = Source Serif 4): English descriptions, highlights, nearby notes — magazine-editorial serif. Chinese prose falls back to system sans (PingFang) via the font stack; **no CJK web font** (perf).
+- **Data layer** (`--font-mono` = system monospace): all numbers, stat values, small uppercase labels, kickers, location lines. The "technical log" feel.
+- Logo stays Pacifico (brand). The big hero headline carries the energy, not the logo.
+
 ## Homepage layout
-- **Top**: decorative world map, 44vh height
-  - CartoDB `light_nolabels` tiles, `noWrap: true`, `maxBounds` to prevent world repeat
-  - Dragging and zoom buttons enabled; scroll wheel zoom disabled
-  - Auto `fitBounds` to all route coordinates on load (`maxZoom: 4`)
-  - Blue country highlights (TopoJSON, decorative only, no interaction)
-  - Continent labels as non-interactive DivIcon markers (hardcoded English)
-  - Red dot markers: hover shows preview card, click navigates to route detail
-- **Bottom**: 2-column route card grid (1-column on mobile)
-  - Each card: cover photo (16:9) + name + location + distance + difficulty badge
+Order: intro splash → header → hero → world map → route carousel.
+- **Intro splash** (`#splash`, `intro.js`/`intro.css`): low-fi dot-globe + typewriter "Tianshu's Runlog" + running-pineapple. **Plays once per browser session** (`sessionStorage` guard); returning from a route page does not replay it. `intro.js` is loaded with `?v=N` — bump N if you need to bust browser cache.
+- **Header**: Pacifico logo only (the tagline was removed — "Est. 2026" misread as a running-origin date).
+- **Hero**: giant Oswald `RUN THE WORLD.` (coral `O`) + four derived tally numbers, all computed from `ROUTES` in `main.js`: Routes (count), KM logged (sum of `distance`), Cities (distinct second-to-last `location` segment), Countries (distinct `country_iso`). Bottom edge is a 2px ink rule.
+- **World map** (decorative, framed with 2px ink top/bottom rules), 44vh:
+  - CartoDB `light_nolabels` tiles, `noWrap: true`, `maxBounds`; drag + zoom buttons on, scroll-zoom off; auto `fitBounds` (`maxZoom: 4`)
+  - Blue country highlights (TopoJSON, decorative, no interaction); continent labels (non-interactive DivIcons); red dot markers: hover preview card, click → route detail
+- **Route carousel** (kept deliberately — NOT a vertical list, which gets too long): horizontal cards, arrows + progress dots, newest-first, **autoplay every 4.5s** (pauses on hover / hidden tab, resets on manual nav). One card per view on mobile. Card: cover photo (16:9) + name + mono uppercase location + bold mono distance + difficulty badge.
+
+## Route detail layout
+Order: floating back button → dark poster header → map → content.
+- **Dark poster header** (`.route-hero.route-hero--dark`): near-black block with `← All routes`, coral location line, big Oswald uppercase title, date, and a 4-up stat bar (Distance / Elevation / Surface / Difficulty; 2×2 grid on mobile). Colors flow through scoped `--rh-*` local variables. **Reversibility:** delete the `.route-hero--dark` block in `style.css` and drop the class → reverts to the all-light poster baseline. The old sticky `.route-header`, `.route-meta`, `.stats-bar` are gone.
+- **Floating back button** (`.route-back-float`, `#route-back-float`): frosted pill, dark-gray text, fixed top-left, fades in after scrolling >240px past the hero (so long pages always have a way back).
+- **Content**: speed legend → description → vibe → highlights → photos → nearby. Body English in serif, Chinese in system sans.
 
 ## File structure
 ```
-index.html      — Homepage: decorative map + route card grid
+index.html      — Homepage: splash + header + hero + map + carousel
 route.html      — Route detail page (single template, loaded via ?id=)
-style.css       — All styles
-main.js         — Homepage map + route card logic
+style.css       — All styles (design tokens in :root)
+main.js         — Homepage map, hero tally, carousel (+ autoplay)
 route.js        — Route detail page logic
+intro.js        — Intro splash animation (once-per-session)
+intro.css       — Intro splash styles
 data.js         — ROUTES array (single source of truth for all route data)
 CLAUDE.md       — This file
 tools/
@@ -92,7 +105,8 @@ images/
 
 ## Fixed rules (never deviate without being asked)
 - **No `duration` field** — never add it, Tianshu explicitly removed it
-- **Difficulty colors**: Easy = green (`#1A7F4B`), Moderate = blue (`#2B5FC4`), Challenging = red (accent). Applied via `data-difficulty` attribute on `.badge` and `.stat-value`
+- **Difficulty colors**: Easy = green (`#1A7F4B`), Moderate = blue (`#2B5FC4`), Challenging = red (accent). Applied via `data-difficulty` attribute on `.badge` and `.route-hero-stat-v` (on the dark header these flip to brighter variants via `--rh-easy/-mod/-chal`)
+- **Type system**: headlines = Oswald (`--font-display`), reading prose = Source Serif 4 (`--font-body`), data/labels = monospace (`--font-mono`); never a CJK web font (Chinese falls back to system sans). See "Type system" above
 - **Speed coloring**: `hsl(speed * 120, 88%, 42%)` — red=slow, yellow=mid, green=fast. Always use Leaflet Canvas renderer for performance
 - **Photos**: compress to 1400px max with `sips`. Cover = `thumb.jpg`, always first in `photos[]`
 - **Bilingual content**: all user-facing text has `_en` and `_zh` variants. Written as natural prose, not robotic translation
@@ -107,7 +121,7 @@ images/
 - **Route detail map**: CartoDB `light_all` (with labels), speed-colored polyline, Canvas renderer, scroll wheel zoom disabled until clicked
 - **Lightbox**: CSS opacity transition on `.lightbox.open`, ESC + click-outside to close
 - **Photo grid**: CSS `:has()` adaptive layout (1/2/3/4/5 photos)
-- **Fonts**: Pacifico (logo only) + system font stack
+- **Fonts**: Pacifico (logo only) + Oswald (`--font-display`, headlines) + Source Serif 4 (`--font-body`, English prose) + system monospace (`--font-mono`, data). Oswald & Source Serif 4 loaded from Google Fonts (Latin only, light); Chinese always uses the system sans stack — no CJK web font. Font `<link>`s live in both `index.html` and `route.html` heads
 
 ## Current routes (as of May 2026)
 | id | Name | Distance | Difficulty | Location |
